@@ -8,7 +8,7 @@ encontram-se os arquivos com imagens das telas já construídas
 <br><br>
 -- /controllers --<br>
 programação do lado servidor. 
-controle de acesso, sessões, mensagens, novos usuários, logs, cadastro / atualização / visaulização de produtos
+controle de acesso, sessões, mensagens, novos usuários, logs, cadastro / atualização / visualização de produtos
 
 <br><br>
 -- / views --<br>
