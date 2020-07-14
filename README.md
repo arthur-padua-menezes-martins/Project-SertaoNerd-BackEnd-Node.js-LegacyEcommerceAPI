@@ -1,16 +1,15 @@
 # ECOMMERCE
-#DESENVOLVIMENTO DO ZERO AO E-COMMERCE. 
-#projeto em desenvolvimento! utilizo NodeJs com banco de dados SQL ( MySQL migrando para T-SQL ) após finalizar o desenvolvimento do lado servidor todas as telas serão #desenvolvidas em ReactJS
+projeto em desenvolvimento! utilizo NodeJs com banco de dados SQL ( MySQL migrando para T-SQL ) após finalizar o desenvolvimento do lado servidor todas as telas serão desenvolvidas em ReactJS
 
 
--- /images
+-- /images --
 encontram-se os arquivos com imagens das telas já construídas
 
--- /controllers
+-- /controllers --
 programação do lado servidor. 
 controle de acesso, sessões, mensagens, novos usuários, logs, cadastro / atualização / visaulização de produtos
 
--- / views
+-- / views --<br>
 utilizo EJS para auxiliar na mostra de informações enviadas pelo servidor, utilzo também de requisições AJAX para atualizar as informações
 
 
