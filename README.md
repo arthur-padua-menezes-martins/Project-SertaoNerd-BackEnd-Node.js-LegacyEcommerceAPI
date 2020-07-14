@@ -12,6 +12,6 @@ controle de acesso, sessões, mensagens, novos usuários, logs, cadastro / atual
 
 <br><br>
 -- / views --<br>
-utilizo EJS para auxiliar na mostra de informações enviadas pelo servidor, utilzo também de requisições AJAX para atualizar as informações
+utilizo EJS para auxiliar na mostra de informações enviadas pelo servidor, utilzo também de requisições AJAX para atualizar as informações da página
 
 
