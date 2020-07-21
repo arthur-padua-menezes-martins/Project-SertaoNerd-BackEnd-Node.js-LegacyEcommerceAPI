@@ -10,63 +10,64 @@ const expressSession = require('express-session')
 
 
 
+app.locals.message =
+{
+    updateSuccessMessage : `informações atualizadas`
+}
+
+
 class sessionsController
 {
 
 
-check ( request, response, next )
+async check ( request, response, next )
 {
     const { user } = request.session
-    
-    if( !user  &&  !validation() )  
-        app.locals.errorMessage[0]( response )
-    else    
-        next ()
+    const { baseUrl } = request
 
-    function validation() { return  request.session.user  &&  request.session.user.hierarchy  ?  true  :  false  }
-}
-
-
-
-
-store( request, response, next )
-{
-    const { user } = request
-    
-    request.session.user = user
-    request.session.save()
-    app.locals.success[0]( response )
-}
-
-
-
-
-update ( request, response, next )
-{
-    const { update } = request
-    const { user } = request.session
-    
-    if(user)
-    {
-        for (const key in update) { user[key] = update[key] }
-        app.locals.success[1]( response )
-    }
+    if( baseUrl == '/administrator'  &&  user )
+        { return validation()  ?  next()  :  app.locals.error[0]( response ) }
+    if( baseUrl != '/administrator'  &&  user )
+        next()
     else
         app.locals.error[0]( response )
+
+    function validation() { return  user.hierarchy == 1  ?  true  :  false }
 }
 
 
 
 
-logout( request, response, next )
+async store( request, response, next )
 {
-    request.session.destroy( error => 
-    {
-        if(!error)
-            { app.locals.success[2]( response ) } 
-        else
-            { app.locals.error[1]( response ) } 
-    })
+    const { session, user } = request
+
+    session.user = user
+    response.send( { success : app.locals.successMessage[0] } )
+}
+
+
+
+
+async update ( request, response, next )
+{
+    var 
+        { updated } = request,
+        { user } = request.session
+
+    for( const key in updated ) { user[key] = updated[key] }
+    response.send( { success : app.locals.message.updateSuccessMessage } )
+}
+
+
+
+
+async logout( request, response, next )
+{
+    const { session } = request
+
+    session.destroy( error => 
+        { response.redirect('/login') } ) 
 }
 
 
@@ -92,12 +93,13 @@ app.locals.successMessage = new Array
 (
     `login realizado com sucesso`,
     `atualização bem sucedida`,
-    `sessão finalizada com sucesso`
+    `sessão finalizada`
 )
 
 
 app.locals.error = new Array
 (
+    ( response ) => { response.render( `login`, { errors : app.locals.errorMessage[0], success : null, token : null } ) },
     ( response ) => { response.render( `account/update`, { errors : app.locals.errorMessage[1], success : null, token : null } ) },
     ( response ) => { response.render( `login`, { errors : errorMessage[2], success: null, token : null } ) }
 )

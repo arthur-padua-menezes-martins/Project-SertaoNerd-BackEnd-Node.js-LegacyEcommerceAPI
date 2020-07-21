@@ -1,12 +1,17 @@
 
 
+/*BASIC MODULES*/
+const express = require('express')
+const app = express()
+
 /*CRYPTOGRAPHY MODULES*/
 const crypto = require('crypto')
 
 /*DATABASE MODULES*/
-const define = require('../../models/database/define/define.js')
-const { Op } = require('sequelize')
-const { ESTALE } = require('constants')
+const mysqlConnection = require('../../models/database/define/connect.js')[0]
+
+/*HELPERS MODULES*/
+helpers = require('../../helpers/function.js')
 
 
 
@@ -15,107 +20,94 @@ class searchsController
 {
 
 
-/*404*/
-async page404( request, response, next ) { return response.render( `search/404.ejs` ) }
+async page404( request, response, next ) { response.render( `search/404.ejs` ) }
 
 
-/*show products*/
 async products( request, response, next )
 { try {
-    
 
-    if( request.method != 'POST' )
+    if( request.method == 'GET' )
     {
-        const { PRODUCT, CATEGORY, REFERENCE } = request.params         
+        const 
+            { params } = request,
+            { product, category, reference } = params
 
-        if( PRODUCT  &&  CATEGORY == undefined  &&  REFERENCE == undefined )   
+        if( product  &&  !category  &&  !reference )   
+            { select( params, 3, 0 ) }
+
+
+        if( product  &&  category  &&  !reference )
+            { select( params, 3, 0 ) } 
+
+
+        if( product  &&  category  &&  reference )
+            { select( params, 1, 0 ) } 
+
+            
+        function select( iterator, limit, offset )
         {
-            const SEACRH = { product : PRODUCT }
-            render( SEACRH, PRODUCT, CATEGORY, REFERENCE, 0, 3 ) 
-        }
+            let [ sql, required ] = helpers.searchSqlConstructor( iterator ),
+            count = `SELECT COUNT(*) AS 'count' FROM products WHERE ${sql}`                
+            sql = `SELECT * FROM products INNER JOIN variations ON products.id = variations.productId AND ${sql} LIMIT ? OFFSET ?`
 
-
-
-        if( PRODUCT  &&  CATEGORY  &&  REFERENCE == undefined )
-        {
-            const SEACRH = { product : PRODUCT, category : CATEGORY }
-            render( SEACRH, PRODUCT, CATEGORY, REFERENCE, 0, 3 ) 
-        }
-
-        
-
-        if( PRODUCT  &&  CATEGORY  &&  REFERENCE )
-        {
-            const SEACRH = { product : PRODUCT, category : CATEGORY, reference : REFERENCE }
-            render( SEACRH, PRODUCT, CATEGORY, REFERENCE, 0, 3 ) 
-        }
-    
-
-
-        function render( SEARCH, PRODUCT, CATEGORY, REFERENCE, offset = 0, limit = 1 )
-        {
-            define[2].findAndCountAll( { offset, limit, where : { [Op.and] : [ { ...SEARCH, ammout : { [Op.gte] : 1 } } ] } } ).then( (RESULT) =>
+            mysqlConnection.query( count, required, ( error, pages, fields ) =>
             {
-                if(  RESULT.rows != '' ) 
-                    response.render( 'search/search.ejs', { RESULT, PRODUCT, CATEGORY, REFERENCE, PAGES : Math.ceil( RESULT.count / 3 ), SESSION : request.session.user } )
-                else 
-                    next()
-            }).catch( (error) => { next() } )
-        } 
+                mysqlConnection.query( sql, [ ...required, limit, offset ], ( error, products, fields ) =>
+                    { !error  ?  response.render( 'search/search.ejs', { products, product, category, reference, pages : Math.ceil( pages[0]['count'] / 3 ), session : request.session.user } )  :  next() } )
+            })
+        }     
     }
 
 
     if( request.method == 'POST' )
     {
         const 
-            { PRODUCT, CATEGORY, REFERENCE, PAGE, FILTER, productId, userId, stars, comment } = request.body,
-            MIN  =  PAGE != 1  ?  3 * parseInt( PAGE - 1 )  :  0,
-            orders  =  FILTER  ?  FILTER.split(' ')  :  null
-   
+            { body } = request,
+            { product, category, reference, pages, filter, productId, userId, stars, comment } = body,
+            offset  =  pages != 1  ?  3 * parseInt( pages - 1 )  :  0,
+            order = filter  ?  `variations.${ filter.split('-')[0] } ${ filter.split('-')[1] }`  :  null
+
         if( productId  &&  userId  &&  stars  &&  comment )
         { 
             request.comments = { productId, userId, stars, comment }
-            next() 
+            next()  
         }
-        if( PAGE == ''  &&  FILTER == '' )
+        if( empty(pages)  &&  empty(filter) )
         { 
             request.comments = {}
             next() 
         }
         
 
-        if( PRODUCT  &&  CATEGORY == ''  &&  REFERENCE == ''  &&  FILTER == '' ) 
+        if( product  &&  empty(category)  &&  empty(reference)  &&  empty(filter) ) 
+            { pagination( body, 3, offset ) }
+        if( product  &&  empty(category)  &&  empty(reference)  &&  filter ) 
+            { pagination( body, 3, offset, order ) }
+
+
+        if( product  &&  category  &&  empty(reference)  &&  empty(filter) ) 
+            { pagination( body, 3, offset ) }
+        if( product  &&  category  &&  empty(reference)  &&  filter ) 
+            { pagination( body, 3, offset, order ) }
+
+
+        function pagination( iterator, limit, offset, order = '' )
         {
-            const SEACRH = { product : PRODUCT }
-            pagination( SEACRH, MIN, 3 ) 
-        }
-        if( PRODUCT  &&  CATEGORY == ''  &&  REFERENCE == ''  &&  FILTER ) 
-        {
-            const SEACRH = { product : PRODUCT }
-            const ORDER = { order : [ [ orders[0], orders[1] ] ] }
-            pagination( SEACRH, MIN, 3, ORDER ) 
-        }
-
-
-
-        if( PRODUCT  &&  CATEGORY  &&  REFERENCE == ''  &&  FILTER == '' ) 
-        {
-            const SEACRH = { product : PRODUCT, category : CATEGORY }
-            pagination( SEACRH, MIN, 3 ) 
-        }
-
-
-
-        function pagination( SEARCH, offset, limit, ORDER = [] )
-        {
-            define[2].findAndCountAll( { offset, limit, where : { [Op.and] : [ { ...SEARCH, ammout : { [Op.gte] : 1 } } ] }, ...ORDER } ).then( (RESULT) => 
-            { 
-                return response.send( RESULT ) 
-            }).catch( (error) => { response.json({error:error}) } )
+            let [ sql, required ] = helpers.searchSqlConstructor( iterator )
+                
+            if( empty(order) )
+                sql = `SELECT * FROM products INNER JOIN variations ON products.id = variations.productId AND ${sql} LIMIT ? OFFSET ?` 
+            else
+                sql = `SELECT * FROM products INNER JOIN variations ON products.id = variations.productId AND ${sql} ORDER BY ${order} LIMIT ? OFFSET ?` 
+            
+            mysqlConnection.query( sql, [ ...required, limit, offset ], ( error, products, fields ) =>
+                { !error  ?  response.send( products )  :  response.status(204) } )
         }
     }
   
-    
+    function empty( reference ) 
+        { return reference == ''  ?  true  :  false }
+
 } catch ( error ) { next() } }
 
 

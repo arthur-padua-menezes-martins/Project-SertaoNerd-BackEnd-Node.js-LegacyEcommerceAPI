@@ -8,86 +8,136 @@ const app = express()
 const crypto = require('crypto')
 
 /*DATABASE MODULES*/
-const define = require('../../models/database/define/define.js')
+const mysqlConnection = require('../../models/database/define/connect.js')[0]
+
+/*HELPERS MODULES*/
+helpers = require('../../helpers/function.js')
 
 //TODO
 // reconfigurar a rota delete para quando o cliente desejar remover sua conta remova somente seu login e senha de usuário mantento os demais dados de pedidos
 
 
+app.locals.sql =
+{
+    loginUsers : `SELECT * FROM users WHERE email = ?`,
+    loginAdministrators : `SELECT * FROM administrators WHERE email = ?`,
+
+    registerSelect : `SELECT email FROM users WHERE email = ?`,
+    registerInsert : `INSERT INTO users ( name, email, password, salt, createdAt, updatedAt ) VALUES ( ?, ?, ?, ?, NOW(), NOW() )`,
+
+
+    recoverSelect : `SELECT email FROM users WHERE email = ?`,
+    recoverUpdate : `UPDATE users SET recovery = ? WHERE email = ?`,
+    
+    newPasswordSelect : `SELECT password, salt, recovery FROM users WHERE email = ? AND recovery = ?`,
+    newPasswordUpdate : `UPDATE users SET password = ?, recovery = null WHERE email = ? AND recovery = ?`,
+
+
+    accountUpdateSelect : `SELECT * FROM users WHERE email = ?`,
+
+    accountDeleteDelete : ` DELETE FROM users WHERE email = ?`,
+
+    accountCommentsCreate : `INSERT INTO user ( userId, productId, stars, comment ) VALUES ( ?, ?, ?, ?)`
+}
+
+app.locals.message =
+{
+    loginErrorMessage : `informações de autenticação inválidas`,
+
+    registerErrorMessage : `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor tente novamente com outras informações`,
+
+
+    recoverErrorMessage : `e-mail de recuperação de senha não cadastrado`, 
+    recoverWarningMessage : `você poderá redefinir sua senha em até 48 horas`,
+
+    newPasswordErrorMessage_01 : `o período para redefinição de senha expirou, requisite um novo`,
+    newPasswordErrorMessage_02 : `informações inválidas, verifique a validade do e-mail`,
+    newPasswordSuccessMessage : `senha alterada com sucesso`,
+    
+
+    commentsErrorMessage : `requisição inválida, preencha o campo corretamente`,
+    commentsSuccessMessage_01 : `comentário atualizado`,
+    commentsSuccessMessage_02 : `comentário deletado`
+}
 
 
 class usersController 
 {
-
-
+    
+    
 /*AUTHENTICATION*/
 /**********************************************************************************************************************************/
 
-login( request, response, next )
-{
+async login( request, response, next )
+{ try {
+    
     const { email, password } = request.body
 
-    if( email != ''  &&  password != '' )
+    if( email  &&  password )
+        { return await validate( app.locals.sql.loginUsers, email, password, false ) }
+    else    
+        { errors( response ) } 
+        
+    function validate ( sql, email, password, Continue )
     {
-        define[1].findOne( { where : { email } } ).then( (user) =>
-        {
-            if(user == undefined)
-            { 
-                define[0].findOne( { where : { email } } ).then( (user) =>
-                {
-                    if(user == undefined) 
-                        app.locals.error[0]( response )
-                    else 
-                    { 
-                        if(user.password != crypto.pbkdf2Sync( password, user.salt, 8, 256, 'sha512' ).toString('hex') )
-                            app.locals.error[0]( response )
-                        else
-                        { 
-                            request.user = user
-                            next() 
-                        }
-                    }
-                })        
-            }
-            else
+        mysqlConnection.query( sql, email, ( error, objectUser, fields ) =>
+        { 
+            if( !error  &&  objectUser[0] != undefined )
             {
-                if(user.password != crypto.pbkdf2Sync( password, user.salt, 8, 256, 'sha512' ).toString('hex') )
-                    app.locals.error[0]( response )
-                else
+                let user = objectUser[0]
+
+                if( user.email == email  &&  user.password == helpers.crypto( password, user.salt ) )
                 { 
                     request.user = user
-                    next() 
+                    return next() 
                 }
-            }
-        })
-    }
-    else
-        app.locals.error[0]( response )
-}
+            } 
+    
+            if( Continue ) 
+                { errors( response ) } 
+            else 
+                { validate( app.locals.sql.loginAdministrators, email, password, true ) }
+
+        } ) 
+    } 
+
+    function errors( response ) { response.send( { errors : app.locals.message.loginErrorMessage } ) }
+
+} catch (error) {}  }  
 
 
 
 
 async register( request, response, next )
-{   
-    const { name, email, password } = request.body
+{ try {
 
-    if( name && email && password )
-    { 
-        define[0].findOne({ where : { email } }).then( (user) => 
+    const
+        { name, email, password } = request.body,   
+        salt = crypto.randomBytes(16).toString('hex'),
+        required = [ `${name}`, `${email}`, `${helpers.crypto( password, salt )}`, `${salt}` ]
+
+    if( Boolean( required ) )
+    {
+        mysqlConnection.query( app.locals.sql.registerSelect, email, ( error, user, fields ) =>
         {
-            if( user == undefined ) 
-            {
-                define[0].create({ name, email, password }).then( () => 
-                    { app.locals.success[0]( response ) } )
+            if ( user == '' )
+            {   
+                mysqlConnection.query( app.locals.sql.registerInsert, required, ( error, user, fields ) =>
+                { 
+                    mysqlConnection.end()
+                    response.send( { success : app.locals.successMessage[0] } )
+                } )
             }
             else
-                app.locals.error[1]( response )
-        }) 
+                { errors( response ) }
+        } )
     }
     else
-        app.locals.error[2]( response )
-} 
+        { errors( response ) }
+
+    function errors( response ) { response.send( { errors : app.locals.message.registerErrorMessage } ) }
+
+} catch (error) {}  }  
 
 
 
@@ -96,66 +146,57 @@ async register( request, response, next )
 /**********************************************************************************************************************************/
 
 async recover( request, response, next )
-{
-    const { email } = request.body
-    
-    define[0].findOne({ where: { email } }).then( (user) =>
+{ try {
+
+    const
+        { email } = request.body,
+        recovery = new Date().getTime() + 1000 * 60 * 60 * 24 * 2,
+        required = [ recovery, `${email}` ]
+
+    mysqlConnection.query( app.locals.sql.recoverSelect, email, ( error, ObjectUser, fields ) =>
     {
-        if(user != undefined)
-        { 
-            user.update( new Object ( { recovery : ( new Date().getTime() + 1728 * 100000 ) } ) )
-            request.user = user
-            next()
+        let user = ObjectUser[0]
+   
+        if( user != undefined)
+        {
+            mysqlConnection.query( app.locals.sql.recoverUpdate, required, ( error, update, fields) =>
+                { response.send( { warning : app.locals.message.recoverWarningMessage, recovery : recovery } ) } )
         }
-        else
-            { app.locals.error[3] }
-    }).catch( (error) => { app.locals.error[4] } ) 
-}
+        else if ( user == undefined )
+            { response.send( { errors : app.locals.message.recoverErrorMessage } ) }
+    } )
 
-
-
-
-async showNewPassword( request, response, next )
-{
-    const { user } = request  
-
-    if(!user) 
-        { app.locals.error[3] } 
-
-    if( parseInt(user.recovery) > new Date().getTime() )  
-        { app.locals.warning[0] }
-
-    else
-    {
-        await user.update( new Object ( { recovery : null } ) )
-        app.locals.error[5]
-    }
-} 
+} catch (error) {}  } 
 
 
 
 
 async newPassword( request, response, next )
-{
-    const { email, password } = request.body
-        
-    define[0].findOne({ where : { email } }).then( (user) =>
-    {
-        if(user == undefined)
-            { app.locals.error[6] }
+{ try {
 
-        if(user.recovery && parseInt(user.recovery) > new Date().getTime() )
+    const 
+        { recovery, email, password } = request.body,
+        required = [ `${email}`, recovery ]
+
+    mysqlConnection.query( app.locals.sql.newPasswordSelect, required, ( error, ObjectUser, fields ) =>
+    {
+        let user = ObjectUser[0]
+        
+        if( user != undefined )
         {
-            user.update( new Object ( { password : crypto.pbkdf2Sync( password, user.salt, 8, 256, 'sha512' ).toString('hex'), recovery : null } ) )
-            app.locals.success[1]
+            if( parseInt( user.recovery ) > new Date().getTime() )
+            {
+                mysqlConnection.query( app.locals.sql.newPasswordUpdate, [ `${helpers.crypto( password, user.salt )}`, ...required ], ( error, update, fields ) =>
+                    { response.send( { success : app.locals.message.newPasswordSuccessMessage } ) } )
+            }
+            else
+                { response.send( { errors : app.locals.message.newPasswordErrorMessage_01 } ) }
         }
         else
-        {
-            user.update( new Object ( { recovery : null } ) )
-            app.locals.error[7]
-        }
-    }).catch( (error) => { app.locals.error[6] } ) 
-}
+            { response.send( { errors : app.locals.message.newPasswordErrorMessage_02 } ) }
+    } )
+
+} catch (error) {}  } 
 
 
 
@@ -163,117 +204,194 @@ async newPassword( request, response, next )
 /*ACCOUNT*/
 /**********************************************************************************************************************************/
 
-index( request, response, next )
-    { response.render( `account` ) }
+async update( request, response, next )
+{ try {
+    
+    const 
+        { body } = request,
+        { user } = request.session,
+        { email, salt } = user
+    let
+        sql = `UPDATE users SET `,
+        required = String()
 
+    for( const key in body ) 
+    { 
+        if( key == 'password' ) 
+        {
+            sql += `${key}=?,`
+            required += `${helpers.crypto( body[key], salt )},`
+        }
+        if( key != 'password' ) 
+        {
+            sql += `${key}=?,`
+            required += `${body[key]},`
+        }   
+    }
+        
+    sql += `updatedAt=NOW() WHERE email=?`
+    required = ( required + email ).split(',')
 
+    await mysqlConnection.query( sql, required, ( error, updates, fields) => 
+    { 
+        mysqlConnection.query( app.locals.sql.accountUpdateSelect, `${body.email}`, ( error, updated, fields ) =>
+        {
+            request.updated = updated[0]
+            next ()
+        } )
+    } )
 
-
-update( request, response, next )
-{
-    const { email } = request.session.user
-    var update = new Object()
-    var keys = new Array( 'createdAt', 'updatedAt' )
-
-    for( const key in request.body ) { request.body[key]  ?  update[key] = request.body[key]  :  keys.push(key) }
-
-    define[0].findOne( { where: { email }, attributes: { exclude : keys } } ).then( (user) => 
-    {
-        if(update['password']) 
-            { update['password'] = crypto.pbkdf2Sync( update['password'], user.salt, 8, 256, 'sha512' ).toString('hex') }
-            
-        user.update( update ) 
-        request.update = update
-        next ()
-
-    }) 
-} 
+} catch( error ) {} } 
 
 
 
 
 async delete( request, response, next )
-{
-    const { email } = request.session.user
+{ try {
 
-    define[0].destroy( { where: { email } } ).then( (success) => 
+    const 
+        { user } = request.session.user,
+        { email } = user        
+
+    mysqlConnection.query( accountDeleteDelete, email, ( error, deleted, fields ) =>
     {
-        if(success != undefined) 
-        { 
-            request.session.destroy( error =>  
-                { app.locals.success[2] })
-        }
-    }) 
-}
+        user.destroy( error =>
+            { response.redirect( `/login` ) })
+    } )
+
+} catch( error ) {} } 
 
 
 
 
-comments( request, response, next )
-{
-    if(request.comments != undefined )
+async comments( request, response, next )
+{ try {
+
+    const 
+    { body, comments } = request,
+    { method, ref } = body,
+    { user } = request.session
+        
+
+    if( comments )
     {
-        const { userId, productId, stars, comment } = request.comments
+        const { userId, productId, stars, comment } = comments
 
-        if( userId  &&  productId  &&  stars  &&  comment )
+        if( Boolean( userId, productId, stars, comment ) )
         {
-            define[3].create({ userId, productId, stars, comment }).then( (success) => 
-            { 
-                response.send({ success : app.locals.successMessage[3] } ) 
-            }).catch( (error) => { next() } )
+            mysqlConnection.query( accountCommentsCreate, required, ( error, coments, fields ) =>
+            {
+                response.send( { success : commentsSuccessMessage_01 } )
+            } )
         }
-        else
-            { response.send({ error : app.locals.errorMessage[7] }) }
+
+
+        await mysqlConnection.query( accountCommentsSelectAll, required, ( error, allComments, fields ) =>
+        {
+
+            if( !Boolean( ref ) )
+            {
+                allComments  ?  response.render( `account/comments`, { errors:null, warning:null, success:null, allComments } )  :  response.render('account/comments', { errors:commentsErrorMessage, warning:null, success:null, allComments:null } ) 
+            }
+
+
+            if( request.method == `POST` )
+            {   
+                if( method == `update` )
+                {
+                    var
+                        update = new Object(),
+                        keys = new Array()
+
+                    for( const key in body ) { Boolean(body[key])  ?  update[key] = body[key]  :  keys.push(key) }
+
+                    mysqlConnection.query( accountCommentsUpdate, required, ( error, updated, fields ) =>
+                    {
+                        if( Boolean( updated ) )
+                            { response.send( { update : commentsSuccessMessage_01 } ) }
+                        else
+                            { response.send( { errors : commentsErrorMessage } ) }
+                    } )
+                }
+
+                
+                if( method == `delete` )
+                {
+                    mysqlConnection.query( accountCommentsDelete, required, ( error, updated, fields ) =>
+                    {
+                        if( Boolean( updated ) )
+                            { response.send( { update : commentsSuccessMessage_02 } ) }
+                        else
+                            { response.send( { errors : commentsErrorMessage } ) }
+                    } )
+                }
+            }
+
+        } )
     }
-    else
-    {
-        response.send('oi')
-    }
-}
+
+} catch (error) {} }
 
 
 }
-
+ 
 
 
 
 /*GLOBAL*/
+/**********************************************************************************************************************************/
 app.locals.errorMessage = new Array
-(
+( 
+    //LOGIN
     `dados de autenticação inválidos`,
+    //REGISTER
     `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor tente novamente com outras informações`,
     `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor preencha todos os campos`, 
+    //RECOVERY
     `e-mail de recuperação de senha não cadastrado`, 
     `o período para redefinição de senha expirou, requisite um novo`,
     `seu período para redefinição de senha expirou, requisite um novo`,
     `os dados informados não pertencem a nenhuma autenticação válida`, 
-    `preencha todos os campos`
+    //COMMENTS
+    `preencha todos os campos`,
+    `requisição inválida, preencha o campo corretamente`
 )
 
 app.locals.warningMessage = new Array
 (
+    //RECOVERY
     `você poderá redefinir sua senha em até 48 horas`
 )
 
 app.locals.successMessage = new Array
 (
+    //REGISTER
     `cadastro realizado com sucesso`,
+    //RECOVERY
     `senha alterada com sucesso, realize o login novamente`,
+    //DELETE
     `usuário deletado com sucesso`,
-    `comentário inserido com sucesso`
+    //COMMENTS
+    `comentário atualizado com sucesso`,
+    `comentário deletado com sucesso`
 )
 
 
 app.locals.error = new Array
 (
-    ( response ) => { response.render( `login`, { errors : app.locals.errorMessage[0], success : null , token : null } ) },
+    ( response ) => { response.send( { errors : response.send( { errors : app.locals.errorMessage[4] } ) } ) },
+
+
+
     ( response ) => { response.render( `register`, { errors : app.locals.errorMessage[1], success : null } ) },
     ( response ) => { response.render( `register`, { errors : app.locals.errorMessage[2], success : null } ) },
     ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[3] } ) },
     ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[4], success : null } ) },
     ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[5], success : null } ) },
     ( response ) => { response.render( `recovery/store`, { errors : app.locals.errorMessage[6], warning : null, success : null } ) },
-    ( response ) => { response.render( `recovery/store`, { errors : app.locals.errorMessage[5], warning : null, success : null } ) }
+    ( response ) => { response.render( `recovery/store`, { errors : app.locals.errorMessage[5], warning : null, success : null } ) },
+    ( response ) => { response.render( `account/comments`, { errors : app.locals.errorMessage[8], warning : null, success : null, COMMENTS : null } ) },
+    ( response ) => { response.render( `account/comments`, { errors : app.locals.errorMessage[8], warning : null, success : null, COMMENTS : null } ) },
 )
 
 app.locals.warning = new Array
@@ -283,13 +401,16 @@ app.locals.warning = new Array
 
 app.locals.success = new Array
 (
-    ( response ) => { response.render( `register`, { errors : null, success : app.locals.successMessage[0] } ) },
-    ( response ) => { response.render( `login`, { errors : null, success: app.locals.successMessage[1], token : null } ) },
-    ( response ) => { response.render( `login`, { errors : null, success : app.locals.successMessage[2], token : null } ) }
+    ( response ) => { response.render( `register`, { errors : null, warning : null, success : app.locals.successMessage[0] } ) },
+    ( response ) => { response.render( `login`, { errors : null, warning : null, success: app.locals.successMessage[1], token : null } ) },
+    ( response ) => { response.render( `login`, { errors : null, warning : null, success : app.locals.successMessage[2], token : null } ) },
+    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : null, token : null, COMMENTS } ) },
+    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : app.locals.successMessage[3], token : null, COMMENTS } ) },
+    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : app.locals.successMessage[4], token : null, COMMENTS } ) }
 )
 
 
- 
+
 
 /*EXPORTS*/
 /**********************************************************************************************************************************/
