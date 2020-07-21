@@ -1,17 +1,6 @@
 # ECOMMERCE
-projeto em desenvolvimento! utilizo NodeJs com banco de dados SQL ( realizando migração para T-SQL ) após finalizar o desenvolvimento do lado servidor todas as telas serão desenvolvidas em ReactJS
 
+-- migrando projeto para o banco de dados MongoDB --
 <br><br>
--- /images --<br>
-encontram-se os arquivos com imagens das telas já construídas
-
-<br><br>
--- /controllers --<br>
-programação do lado servidor. 
-controle de acesso, sessões, mensagens, novos usuários, logs, cadastro / atualização / visualização de produtos
-
-<br><br>
--- / views --<br>
-utilizo EJS para auxiliar na mostra de informações enviadas pelo servidor, utilzo também de requisições AJAX para atualizar as informações da página
 
 
