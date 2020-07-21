@@ -11,13 +11,15 @@ const sessionsController = require('../../controllers/session/index.js'); const 
 
 
 
-router.get( '/', userController.index )
+router.get( '/', ( request, response ) => 
+    { response.render( `account` ) } )
 
 
 router.get( '/logout', sessionController.logout )
 
 
-router.get( '/update', ( request, response ) => { response.render('account/update', { errors : null, success : null, token : null } ) } )
+router.get( '/update', ( request, response ) => 
+    { response.render( `account/update` ) } )
 router.post( '/update', userController.update, sessionController.update )
 
 
@@ -25,6 +27,7 @@ router.get( '/delete', userController.delete, sessionController.logout )
 
 
 router.get( '/comments', userController.comments )
+router.post( '/comments', userController.comments )
 
 
 /*EXPORTS USER ROUTES*/

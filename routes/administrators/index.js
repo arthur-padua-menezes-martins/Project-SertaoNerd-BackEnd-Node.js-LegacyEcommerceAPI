@@ -29,6 +29,7 @@ router.get( '/control/products', administratorController.controlProducts ) //
 router.post( '/control/products', upload.array('file'), administratorController.controlProducts )
 
 router.get( '/control/comments', administratorController.controlComments ) //
+router.post( '/control/comments', administratorController.controlComments ) //
 
 router.get( '/control/email', administratorController.controlEmail ) //
 

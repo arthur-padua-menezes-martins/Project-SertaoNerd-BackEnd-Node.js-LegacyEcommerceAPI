@@ -11,24 +11,25 @@ router.get('/view', (request, response) => { response.json({ session:request.ses
 
 
 
-router.get( '/register', ( request, response ) => 
-    { response.render( 'register', { errors : null, success : null } ) } )
-router.post( '/register', userController.register)
+router.get( `/register`, ( request, response ) => 
+    { response.render( `register`) } )
+router.post( `/register`, userController.register)
 
 
-router.get( '/login', ( request, response ) => 
-    { response.render( 'login', { errors : null, success : null, token : null } ) } )
-router.post( '/login', userController.login, sessionController.store )
+router.get( `/login`, ( request, response ) => 
+    { response.render( `login` ) } )
+router.post( `/login`, userController.login, sessionController.store )
 
 
-router.get( '/recover-password', ( request, response) => 
-    { response.render( `recovery`, { errors : null, success : null } ) } )
+router.get( `/recover-password`, ( request, response) => 
+    { response.render( `recovery`) } )
 
-router.post( '/recover-password', userController.recover, userController.showNewPassword ) 
+router.post( `/recover-password`, userController.recover ) 
 
-router.get( '/new-password', ( request, response ) => { response.render( 'recovery/store', { errors : null, warning : null, success : null } ) } )
+router.get( `/new-password`, ( request, response ) => 
+    { response.render( `recovery/store` ) } )
 
-router.post( '/new-password', userController.newPassword )
+router.post( `/new-password`, userController.newPassword )
 
 
 

@@ -12,14 +12,14 @@ const sessionsController = require('../../controllers/session/index.js'); const 
  
 
 
-router.get( '/:PRODUCT', searchController.products, searchController.page404 )
-router.post( '/:PRODUCT', searchController.products )
+router.get( '/:product', searchController.products, searchController.page404 )
+router.post( '/:product', searchController.products )
 
-router.get( '/:PRODUCT/:CATEGORY', searchController.products, searchController.page404 )
-router.post( '/:PRODUCT/:CATEGORY', searchController.products )
+router.get( '/:product/:category', searchController.products, searchController.page404 )
+router.post( '/:product/:category', searchController.products )
 
-router.get( '/:PRODUCT/:CATEGORY/:REFERENCE', searchController.products, searchController.page404 )
-router.post( '/:PRODUCT/:CATEGORY/:REFERENCE', searchController.products, userController.comments )
+router.get( '/:product/:category/:reference', searchController.products, searchController.page404 )
+router.post( '/:product/:category/:reference', searchController.products, userController.comments )
 
   
 
