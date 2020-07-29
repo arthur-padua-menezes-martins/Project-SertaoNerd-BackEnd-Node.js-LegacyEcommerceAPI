@@ -2,7 +2,7 @@
 
 22/07/2020 
 <br>
--- migrando o projeto para MongoDB --
+-- migrando o projeto para Mongo --
 <br><br>
 
 
