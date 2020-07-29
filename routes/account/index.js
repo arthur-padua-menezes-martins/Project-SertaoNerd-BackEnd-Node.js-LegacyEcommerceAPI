@@ -1,34 +1,35 @@
-
+const
 
 /*BASIC MODULES*/
-const router = require('express').Router()
+    router = require('express').Router(),
 
 /*AUTHENTICATION MODULES*/
-const usersController = require('../../controllers/users/index.js'); const userController = new usersController()
-const sessionsController = require('../../controllers/session/index.js'); const sessionController = new sessionsController()
+    usersController = require('../../controllers/users/index.js'),
+    sessionController = require('../../controllers/session/index.js'),    
+    assessmentsController = require('../../controllers/assessments/index.js'),    
+    users = new usersController(),
+    session = new sessionController(),
+    assessments = new assessmentsController()
 
 
 
 
+router.get( '/', users.show )
 
-router.get( '/', ( request, response ) => 
-    { response.render( `account` ) } )
+router.get( `/logout`, session.logout )
 
+router.get( `/update`, ( request, response ) => { response.render( `account/update` ) } )
+router.post( `/update`, users.update )
 
-router.get( '/logout', sessionController.logout )
-
-
-router.get( '/update', ( request, response ) => 
-    { response.render( `account/update` ) } )
-router.post( '/update', userController.update, sessionController.update )
+router.get( `/delete`, users.delete )
 
 
-router.get( '/delete', userController.delete, sessionController.logout )
-
-
-router.get( '/comments', userController.comments )
-router.post( '/comments', userController.comments )
-
+router.post( `/assessments/create`, assessments.create )
+router.post( `/assessments/update`, assessments.update )
+router.get( `/assessments/:id?`, assessments.view )
+/*
+router.post( `/assessments`, assessments.update )
+*/
 
 /*EXPORTS USER ROUTES*/
 /**********************************************************************************************************************************/

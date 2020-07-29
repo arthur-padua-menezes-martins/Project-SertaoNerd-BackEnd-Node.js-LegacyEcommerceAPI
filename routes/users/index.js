@@ -1,39 +1,32 @@
-
+const
 
 /*BASIC MODULES*/
-const router = require('express').Router()
+    router = require('express').Router(),
 
 /*AUTHENTICATION MODULES*/
-const usersController = require('../../controllers/users/index.js'); const userController = new usersController()
-const sessionsController = require('../../controllers/session/index.js'); const sessionController = new sessionsController()
-router.get('/view', (request, response) => { response.json({ session:request.session.user }) })
+    usersController = require('../../controllers/users/index.js'), 
+    users = new usersController()
+    
 
 
 
-
-router.get( `/register`, ( request, response ) => 
-    { response.render( `register`) } )
-router.post( `/register`, userController.register)
+router.get( `/register`, ( request, response ) => { response.render( `register/register.ejs`) } )
+router.post( `/register`, users.register )
 
 
-router.get( `/login`, ( request, response ) => 
-    { response.render( `login` ) } )
-router.post( `/login`, userController.login, sessionController.store )
+router.get( `/login`, ( request, response ) => { response.render( `login/login.ejs` ) } )
+router.post( `/login`, users.login )
 
 
-router.get( `/recover-password`, ( request, response) => 
-    { response.render( `recovery`) } )
+router.get( `/recovery-password`, ( request, response) => { response.render( `recovery/recovery-password.ejs`) } )
+router.post( `/recovery-password`, users.recovery ) 
 
-router.post( `/recover-password`, userController.recover ) 
-
-router.get( `/new-password`, ( request, response ) => 
-    { response.render( `recovery/store` ) } )
-
-router.post( `/new-password`, userController.newPassword )
+router.get( `/new-password`, ( request, response ) => { response.render( `recovery/new-password.ejs` ) } )
+router.post( `/new-password`, users.newPassword )
 
 
 
-
+router.get( `/view`, ( request, response ) => { response.json( { session : request.session.user } ) } )
 /*EXPORTS USER ROUTES*/
 /**********************************************************************************************************************************/
 module.exports = router

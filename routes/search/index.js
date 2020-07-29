@@ -1,26 +1,30 @@
-
+const
 
 /*BASIC MODULES*/
-const router = require('express').Router()
-const validation = require('express-validation')
+    router = require('express').Router(),
 
 /*AUTHENTICATION MODULES*/
-const searchsController = require('../../controllers/search/index.js'); const searchController = new searchsController()
-const usersController = require('../../controllers/users/index.js'); const userController = new usersController()
-const sessionsController = require('../../controllers/session/index.js'); const sessionController = new sessionsController()
+    usersController = require('../../controllers/users/index.js'),
+    searchController = require('../../controllers/search/index.js') ,
+    users = new usersController(),
+    search = new searchController()
 
  
 
 
-router.get( '/:product', searchController.products, searchController.page404 )
-router.post( '/:product', searchController.products )
+router.get( `/:categories/:name?/:reference?`, search.showProducts )
+router.post( `/:categories/:name?/:reference?`, search.showProducts )
 
-router.get( '/:product/:category', searchController.products, searchController.page404 )
-router.post( '/:product/:category', searchController.products )
+/*
+router.get( '/:product', search.products, search.page404 )
+router.post( '/:product', search.products )
 
-router.get( '/:product/:category/:reference', searchController.products, searchController.page404 )
-router.post( '/:product/:category/:reference', searchController.products, userController.comments )
+router.get( '/:product/:category', search.products, search.page404 )
+router.post( '/:product/:category', search.products )
 
+router.get( '/:product/:category/:reference', search.products, search.page404 )
+router.post( '/:product/:category/:reference', search.products, users.comments )
+*/
   
 
 

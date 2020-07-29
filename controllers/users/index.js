@@ -1,76 +1,140 @@
-
+const 
 
 /*BASIC MODULES*/
-const express = require('express')
-const app = express()
+    express = require('express'),
+    app = express(),
 
 /*CRYPTOGRAPHY MODULES*/
-const crypto = require('crypto')
+    crypto = require('crypto'),
 
 /*DATABASE MODULES*/
-const mysqlConnection = require('../../models/database/define/connect.js')[0]
+ 
+    mysqlConnection = require('../../models/database/SQL/connect.js')[0],
+    mongoose = require('mongoose'),
+    users = require('../../models/database/MongoDB/Schema/users.js'),
 
 /*HELPERS MODULES*/
-helpers = require('../../helpers/function.js')
-
-//TODO
-// reconfigurar a rota delete para quando o cliente desejar remover sua conta remova somente seu login e senha de usuário mantento os demais dados de pedidos
-
-
-app.locals.sql =
-{
-    loginUsers : `SELECT * FROM users WHERE email = ?`,
-    loginAdministrators : `SELECT * FROM administrators WHERE email = ?`,
-
-    registerSelect : `SELECT email FROM users WHERE email = ?`,
-    registerInsert : `INSERT INTO users ( name, email, password, salt, createdAt, updatedAt ) VALUES ( ?, ?, ?, ?, NOW(), NOW() )`,
+ 
+    helpers = require('../../helpers/function.js'),
+    locals = require('../../helpers/locals'),
+    message = locals[0]
 
 
-    recoverSelect : `SELECT email FROM users WHERE email = ?`,
-    recoverUpdate : `UPDATE users SET recovery = ? WHERE email = ?`,
-    
-    newPasswordSelect : `SELECT password, salt, recovery FROM users WHERE email = ? AND recovery = ?`,
-    newPasswordUpdate : `UPDATE users SET password = ?, recovery = null WHERE email = ? AND recovery = ?`,
-
-
-    accountUpdateSelect : `SELECT * FROM users WHERE email = ?`,
-
-    accountDeleteDelete : ` DELETE FROM users WHERE email = ?`,
-
-    accountCommentsCreate : `INSERT INTO user ( userId, productId, stars, comment ) VALUES ( ?, ?, ?, ?)`
-}
-
-app.locals.message =
-{
-    loginErrorMessage : `informações de autenticação inválidas`,
-
-    registerErrorMessage : `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor tente novamente com outras informações`,
-
-
-    recoverErrorMessage : `e-mail de recuperação de senha não cadastrado`, 
-    recoverWarningMessage : `você poderá redefinir sua senha em até 48 horas`,
-
-    newPasswordErrorMessage_01 : `o período para redefinição de senha expirou, requisite um novo`,
-    newPasswordErrorMessage_02 : `informações inválidas, verifique a validade do e-mail`,
-    newPasswordSuccessMessage : `senha alterada com sucesso`,
-    
-
-    commentsErrorMessage : `requisição inválida, preencha o campo corretamente`,
-    commentsSuccessMessage_01 : `comentário atualizado`,
-    commentsSuccessMessage_02 : `comentário deletado`
-}
 
 
 class usersController 
 {
-    
-    
+
+
 /*AUTHENTICATION*/
 /**********************************************************************************************************************************/
+
+async register( request, response, next )
+{ try {
+
+    /*MongoDB*/
+    const { name, email, password } = request.body, required = Boolean( name  &&  email  &&  password )
+        
+    if( required )
+    {
+        if( typeof helpers.EmailValidator( email ) == typeof Boolean() )
+        {
+            users.findOne( { email : email } ).then( async ( User ) =>
+            {
+                if( !Boolean( User ) )
+                {
+                    var user = await new users ( { name, email } )
+                    await user.passwordHash( password, user )
+                    response.status(200).send( { success : message.RegisterSuccess } )  
+                } 
+                
+                else
+
+                response.send( { errors : message.RegisterError } )
+            } ) 
+        } 
+        
+        else
+
+        response.send( { errors : helpers.EmailValidator( email ) } )
+    }
+    
+    else
+    
+    response.send( { errors : message.RegisterError } )
+    
+
+    /*SQL
+    const
+        { name, email, password } = request.body,   
+        salt = crypto.randomBytes(16).toString('hex'),
+        required = [ `${name}`, `${email}`, `${helpers.crypto( password, salt )}`, `${salt}` ]
+
+    if( Boolean( required ) )
+    {
+        mysqlConnection.query( app.locals.sql.registerSelect, email, ( error, user, fields ) =>
+        {
+            if ( user == '' )
+            {   
+                mysqlConnection.query( app.locals.sql.registerInsert, required, ( error, user, fields ) =>
+                { 
+                    mysqlConnection.end()
+                    response.send( { success : app.locals.message.registerSuccessMessage } )
+                } )
+            }
+            else
+                { errors( response ) }
+        } )
+    }
+    else
+        { errors( response ) }
+
+    function errors( response ) { response.send( { errors : app.locals.message.registerErrorMessage } ) }
+    */
+
+} catch ( error ) {}  }  
+
+
+
 
 async login( request, response, next )
 { try {
     
+    /*MongoDB*/
+    const { email, password } = request.body, required = Boolean( email  &&  password )
+       
+    if( required )
+
+        users.findOne( { email } ).then( async ( User ) => 
+        {
+            if( Boolean( User ) )
+            {
+                const 
+                    user = new users,
+                    verify = user.verify( password, User )
+
+                if( Boolean( verify ) )
+                {
+                    request.user = User
+                    User.sessionStore( request, response )
+                }
+            
+                else    
+            
+                    response.status(200).send( { errors : message.LoginError } )
+            }
+
+            else
+
+            response.send( { errors : message.LoginError } )
+        })
+
+    else
+        
+    response.send( { errors : message.LoginError } )
+
+
+    /*SQL
     const { email, password } = request.body
 
     if( email  &&  password )
@@ -102,42 +166,9 @@ async login( request, response, next )
     } 
 
     function errors( response ) { response.send( { errors : app.locals.message.loginErrorMessage } ) }
+    */
 
-} catch (error) {}  }  
-
-
-
-
-async register( request, response, next )
-{ try {
-
-    const
-        { name, email, password } = request.body,   
-        salt = crypto.randomBytes(16).toString('hex'),
-        required = [ `${name}`, `${email}`, `${helpers.crypto( password, salt )}`, `${salt}` ]
-
-    if( Boolean( required ) )
-    {
-        mysqlConnection.query( app.locals.sql.registerSelect, email, ( error, user, fields ) =>
-        {
-            if ( user == '' )
-            {   
-                mysqlConnection.query( app.locals.sql.registerInsert, required, ( error, user, fields ) =>
-                { 
-                    mysqlConnection.end()
-                    response.send( { success : app.locals.successMessage[0] } )
-                } )
-            }
-            else
-                { errors( response ) }
-        } )
-    }
-    else
-        { errors( response ) }
-
-    function errors( response ) { response.send( { errors : app.locals.message.registerErrorMessage } ) }
-
-} catch (error) {}  }  
+} catch ( error ) {}  }  
 
 
 
@@ -145,9 +176,34 @@ async register( request, response, next )
 /*PASSWORD RECOVERY*/
 /**********************************************************************************************************************************/
 
-async recover( request, response, next )
+async recovery( request, response, next )
 { try {
 
+    /*MongoDB*/
+    const { email } = request.body, recovery = new Date().getTime() + 1000 * 60 * 60 * 24 * 2
+
+    if( typeof helpers.EmailValidator( email ) == typeof Boolean() )
+    {
+        users.findOne( { email } ).then( async ( User ) => 
+        {
+            if( Boolean( User ) )
+            {
+                await User.recover( User, recovery )
+                response.send( { warning : message.RecoveryWarning, recovery } )
+            }
+
+            else
+
+            response.send( { errors : message.RecoveryError[0] } )
+
+        } )
+    }
+    
+    else
+    
+    response.send( { errors : helpers.EmailValidator( email ) } )
+    
+    /* SQL
     const
         { email } = request.body,
         recovery = new Date().getTime() + 1000 * 60 * 60 * 24 * 2,
@@ -165,8 +221,9 @@ async recover( request, response, next )
         else if ( user == undefined )
             { response.send( { errors : app.locals.message.recoverErrorMessage } ) }
     } )
+    */
 
-} catch (error) {}  } 
+} catch ( error ) {}  } 
 
 
 
@@ -174,6 +231,31 @@ async recover( request, response, next )
 async newPassword( request, response, next )
 { try {
 
+    /*MongoDB*/
+    const { recovery, email, password } = request.body
+
+    users.findOne( { email, recovery } ).then( async ( User ) =>
+    {
+        if( Boolean( User ) )
+        {
+            if( parseInt( User.recovery ) > new Date().getTime() )
+            {
+                await User.unsetRecover( User, password )
+                response.send( { success : message.RecoverySuccess } )
+            }
+
+            else
+
+            response.send( { erros :  message.RecoveryError[2] } )
+        }
+
+        else
+        
+        response.send( { erros :  message.RecoveryError[1] } )
+    } )
+
+
+    /*SQL
     const 
         { recovery, email, password } = request.body,
         required = [ `${email}`, recovery ]
@@ -195,6 +277,7 @@ async newPassword( request, response, next )
         else
             { response.send( { errors : app.locals.message.newPasswordErrorMessage_02 } ) }
     } )
+    */
 
 } catch (error) {}  } 
 
@@ -204,9 +287,38 @@ async newPassword( request, response, next )
 /*ACCOUNT*/
 /**********************************************************************************************************************************/
 
+async show( request, response, next )
+{ try{
+
+    /*MongoDB*/
+    const { body, session } = request, { user } = session, { _id } = user
+    
+    users.findById( _id ).then( ( User ) =>
+    {
+        response.render( `account/index.ejs`, { User } ) 
+    })
+    
+} catch ( error ) {} }
+
+
+
+
 async update( request, response, next )
 { try {
     
+    /*MongoDB*/
+    const { body, session } = request, { user } = session, { _id } = user, update = {}, keys = []
+
+    users.findById( _id ).then( async ( User ) =>
+    {
+        for( const Key in body ) { Boolean( body[Key] )  ?  update[Key] = body[Key]  :  keys.push(Key) }
+        for( const key in update ) { key == 'password'  ?  User[key] = await User.passwordHash( update[key], User )  :  User[key] = body[key] }
+        User.save()
+        User.sessionUpdate( request, response, User )
+    })
+
+
+    /*SQL
     const 
         { body } = request,
         { user } = request.session,
@@ -240,6 +352,7 @@ async update( request, response, next )
             next ()
         } )
     } )
+    */
 
 } catch( error ) {} } 
 
@@ -249,6 +362,17 @@ async update( request, response, next )
 async delete( request, response, next )
 { try {
 
+    /*MongoDB*/
+    const { session } = request, { user } = session, { _id } = user 
+
+    users.findById( _id ).then( async ( User ) =>
+    {
+        await User.accountDelete( User )
+        User.sessionLogout( request, response )
+    } )    
+         
+
+    /*SQL
     const 
         { user } = request.session.user,
         { email } = user        
@@ -258,6 +382,7 @@ async delete( request, response, next )
         user.destroy( error =>
             { response.redirect( `/login` ) })
     } )
+    */
 
 } catch( error ) {} } 
 
@@ -335,80 +460,6 @@ async comments( request, response, next )
 
 }
  
-
-
-
-/*GLOBAL*/
-/**********************************************************************************************************************************/
-app.locals.errorMessage = new Array
-( 
-    //LOGIN
-    `dados de autenticação inválidos`,
-    //REGISTER
-    `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor tente novamente com outras informações`,
-    `não é possivel gerar uma autenticação válida com os dados fornecidos, por favor preencha todos os campos`, 
-    //RECOVERY
-    `e-mail de recuperação de senha não cadastrado`, 
-    `o período para redefinição de senha expirou, requisite um novo`,
-    `seu período para redefinição de senha expirou, requisite um novo`,
-    `os dados informados não pertencem a nenhuma autenticação válida`, 
-    //COMMENTS
-    `preencha todos os campos`,
-    `requisição inválida, preencha o campo corretamente`
-)
-
-app.locals.warningMessage = new Array
-(
-    //RECOVERY
-    `você poderá redefinir sua senha em até 48 horas`
-)
-
-app.locals.successMessage = new Array
-(
-    //REGISTER
-    `cadastro realizado com sucesso`,
-    //RECOVERY
-    `senha alterada com sucesso, realize o login novamente`,
-    //DELETE
-    `usuário deletado com sucesso`,
-    //COMMENTS
-    `comentário atualizado com sucesso`,
-    `comentário deletado com sucesso`
-)
-
-
-app.locals.error = new Array
-(
-    ( response ) => { response.send( { errors : response.send( { errors : app.locals.errorMessage[4] } ) } ) },
-
-
-
-    ( response ) => { response.render( `register`, { errors : app.locals.errorMessage[1], success : null } ) },
-    ( response ) => { response.render( `register`, { errors : app.locals.errorMessage[2], success : null } ) },
-    ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[3] } ) },
-    ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[4], success : null } ) },
-    ( response ) => { response.render( `recovery`, { errors : app.locals.errorMessage[5], success : null } ) },
-    ( response ) => { response.render( `recovery/store`, { errors : app.locals.errorMessage[6], warning : null, success : null } ) },
-    ( response ) => { response.render( `recovery/store`, { errors : app.locals.errorMessage[5], warning : null, success : null } ) },
-    ( response ) => { response.render( `account/comments`, { errors : app.locals.errorMessage[8], warning : null, success : null, COMMENTS : null } ) },
-    ( response ) => { response.render( `account/comments`, { errors : app.locals.errorMessage[8], warning : null, success : null, COMMENTS : null } ) },
-)
-
-app.locals.warning = new Array
-(
-    ( response ) => { response.render( `recovery/store`, { errors : null, warning : app.locals.warningMessage[0], success : null } ) },
-)
-
-app.locals.success = new Array
-(
-    ( response ) => { response.render( `register`, { errors : null, warning : null, success : app.locals.successMessage[0] } ) },
-    ( response ) => { response.render( `login`, { errors : null, warning : null, success: app.locals.successMessage[1], token : null } ) },
-    ( response ) => { response.render( `login`, { errors : null, warning : null, success : app.locals.successMessage[2], token : null } ) },
-    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : null, token : null, COMMENTS } ) },
-    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : app.locals.successMessage[3], token : null, COMMENTS } ) },
-    ( response, COMMENTS ) => { response.render( `account/comments`, { errors : null, warning : null, success : app.locals.successMessage[4], token : null, COMMENTS } ) }
-)
-
 
 
 
