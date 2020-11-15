@@ -1,83 +1,82 @@
 const
-    mongoose = require(`mongoose`),
-    mongoosePaginate = require(`mongoose-paginate`),
-    Schema = mongoose.Schema,
+  mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
+const Schema = mongoose.Schema
 
+const variationsSchema = new Schema({
 
-    variationsSchema = new Schema({
+  code: {
+    type: String
+  },
 
-        code: {
-            type: String
-        },
+  name: {
+    type: String
+  },
 
-        name: {
-            type: String
-        },
+  title: {
+    type: String
+  },
 
-        title: {
-            type: String
-        },
+  value: {
+    type: Number
+  },
 
-        value: {
-            type: Number
-        },
+  defaultValue: {
+    type: Number
+  },
 
-        defaultValue: {
-            type: Number
-        },
-
-        images:
+  images:
         {
-            type: Array,
-            default: []
+          type: Array,
+          default: []
         },
 
-        ticket: {
-            type: Array,
-            default: []
-        },
+  ticket: {
+    type: Array,
+    default: []
+  },
 
-        quantityInStock: {
-            type: Number
-        },
+  quantityInStock: {
+    type: Number
+  },
 
-        quantityInTransaction: {
-            type: Number
-        },
+  quantityInTransaction: {
+    type: Number
+  },
 
-        deliveries: {
-            dimensions: {
-                width: {
-                    type: Number
-                },
-                height: {
-                    type: Number
-                },
-                length: {
-                    type: Number
-                }
-            },
-            weight: {
-                type: Number
-            },
-            freeShipping: {
-                type: Boolean,
-                default: false
-            }
-        },
+  deliveries: {
+    dimensions: {
+      width: {
+        type: Number
+      },
+      height: {
+        type: Number
+      },
+      length: {
+        type: Number
+      }
+    },
+    weight: {
+      type: Number
+    },
+    freeShipping: {
+      type: Boolean,
+      default: false
+    }
+  },
 
-        availability: {
-            type: Boolean,
-            default: true
-        },
+  availability: {
+    type: Boolean,
+    default: true
+  },
 
-        products: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: `products`
-            }
-        ],
+  products: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'products'
+    }
+  ]
 
-    }, { timestamps: true })
+}, { timestamps: true })
 variationsSchema.plugin(mongoosePaginate)
-module.exports = mongoose.model(`variations`, variationsSchema)
+module.exports = mongoose.model('variations', variationsSchema)

@@ -1,63 +1,62 @@
 const
-    mongoose = require(`mongoose`),
-    Schema = mongoose.Schema,
-    mongoosePaginate = require(`mongoose-paginate`),
+  mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const mongoosePaginate = require('mongoose-paginate')
 
+const productsSchema = new Schema({
 
-    productsSchema = new Schema({
+  reference: {
+    type: String
+  },
 
-        reference: {
-            type: String
-        },
+  type: {
+    type: String
+  },
 
-        type: {
-            type: String
-        },
+  collections: [
+    {
+      type: String
+    }
+  ],
 
-        collections: [
-            {
-                type: String
-            }
-        ],
+  title: {
+    type: String
+  },
 
-        title: {
-            type: String
-        },
+  description: {
+    type: String
+  },
 
-        description: {
-            type: String
-        },
+  availability: {
+    type: Boolean,
+    default: true
+  },
 
-        availability: {
-            type: Boolean,
-            default: true
-        },
+  tags: [
+    {
+      type: String
+    }
+  ],
 
-        tags: [
-            {
-                type: String,
-            }
-        ],
+  categories: {
+    type: Schema.Types.ObjectId,
+    ref: 'categories'
+  },
 
-        categories: {
-            type: Schema.Types.ObjectId,
-            ref: `categories`
-        },
+  variations: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'variations'
+    }
+  ],
 
-        variations: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: `variations`
-            }
-        ],
+  assessments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'assessments'
+    }
+  ]
 
-        assessments: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: `assessments`
-            }
-        ],
-
-    }, { timestamps: true })
+}, { timestamps: true })
 productsSchema.plugin(mongoosePaginate)
-module.exports = mongoose.model(`products`, productsSchema)
+module.exports = mongoose.model('products', productsSchema)

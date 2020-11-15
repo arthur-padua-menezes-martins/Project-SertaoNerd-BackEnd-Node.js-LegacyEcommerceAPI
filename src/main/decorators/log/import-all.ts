@@ -1,5 +1,0 @@
-export { IController, IHttpRequest, IHttpResponse } from '../../../presentation/protocols/export-all'
-export { LogControllerDecorator } from './log-controller-decorator'
-export { LogErrorRepository } from '../../../data/protocols/repository/log/error/log-error-repository'
-export { serverError } from '../../../presentation/helpers/http/response/export-all'
-export { informationsOfSignUpHttpRequestBodyMatch } from '../../../utils/fake/informations-of/user/sign-up/fake-data-sign-up-http-request-body'

@@ -1,75 +1,69 @@
 const
 
-/*DATABASE MODULES*/
-    mongoose = require(`mongoose`),
-    mongoosePaginate = require(`mongoose-paginate`),
-    Schema = mongoose.Schema,
+  /* DATABASE MODULES */
+  mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
+const Schema = mongoose.Schema
 
-
-
-    
-requestsSchema = new Schema
+const requestsSchema = new Schema
 ({
 
-    users:
+  users:
     {
-        type : Schema.Types.ObjectId,
-        ref : `users`
+      type: Schema.Types.ObjectId,
+      ref: 'users'
     },
 
-    cart:
+  cart:
     [{
-        staticProducts:
+      staticProducts:
         {
-            type : String
+          type: String
         },
 
-        products: 
+      products:
         {
-            type : Schema.Types.ObjectId,
-            ref : `products`
+          type: Schema.Types.ObjectId,
+          ref: 'products'
         },
 
-        variations:
+      variations:
         {
-            type : Schema.Types.ObjectId,
-            ref : `variations`
+          type: Schema.Types.ObjectId,
+          ref: 'variations'
         },
 
-        quantity:
+      quantity:
         {
-            type : Number,
-            default : 1
+          type: Number,
+          default: 1
         },
 
-        unitaryValue:
+      unitaryValue:
         {
-            type : Number
+          type: Number
         }
-    }], 
-    
-    payments:
+    }],
+
+  payments:
     {
-        type : Schema.Types.ObjectId,
-        ref : `payments`
+      type: Schema.Types.ObjectId,
+      ref: 'payments'
     },
 
-    deliveries:
+  deliveries:
     {
-        type : Schema.Types.ObjectId,
-        ref : `deliveries`
+      type: Schema.Types.ObjectId,
+      ref: 'deliveries'
     },
 
-    canceled:
+  canceled:
     {
-        type : Boolean,
-        default : false
+      type: Boolean,
+      default: false
     }
- 
-}, { timestamps : true } )
-requestsSchema.plugin( mongoosePaginate )
 
+}, { timestamps: true })
+requestsSchema.plugin(mongoosePaginate)
 
-
-
-module.exports = mongoose.model( `requests`, requestsSchema )
+module.exports = mongoose.model('requests', requestsSchema)

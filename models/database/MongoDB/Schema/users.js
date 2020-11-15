@@ -1,170 +1,163 @@
-const { every } = require("../../../../helpers/function/verify.js")
+const { every } = require('../../../../helpers/function/verify.js')
 
-/*CRYPTOGRAPHY MODULES*/
+/* CRYPTOGRAPHY MODULES */
 const
-    crypto = require(`crypto`),
+  crypto = require('crypto')
 
-    /*HELPERS MODULES*/
-    verify = require(`../../../../helpers/function/verify.js`),
-    userMessages = require(`../../../../helpers/message/userMessages.js`),
+/* HELPERS MODULES */
+const verify = require('../../../../helpers/function/verify.js')
+const userMessages = require('../../../../helpers/message/userMessages.js')
 
-    /*DATABASE MODULES*/
-    mongoose = require(`mongoose`),
-    Schema = mongoose.Schema,
-    uniqueValidator = require(`mongoose-unique-validator`),
-    mongoosePaginate = require(`mongoose-paginate`),
+/* DATABASE MODULES */
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const uniqueValidator = require('mongoose-unique-validator')
+const mongoosePaginate = require('mongoose-paginate')
 
+const usersSchema = new mongoose.Schema({
 
-    usersSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
 
-        name: {
-            type: String,
-            required: true
-        },
+  email: {
+    type: String,
+    index: true,
+    lowercase: true,
+    unique: true,
+    required: true
+  },
 
-        email: {
-            type: String,
-            index: true,
-            lowercase: true,
-            unique: true,
-            required: true
-        },
+  password: {
+    type: String
+  },
 
-        password: {
-            type: String
-        },
+  cpf: {
+    type: String
+  },
 
-        cpf: {
-            type: String
-        },
+  phone: [
+    {
+      type: String
+    }
+  ],
 
-        phone: [
-            {
-                type: String
-            }
-        ],
+  dateOfBirth: {
+    type: Date
+  },
 
-        dateOfBirth: {
-            type: Date
-        },
+  address: {
+    street: {
+      type: String
+    },
+    number: {
+      type: String
+    },
+    district: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    state: {
+      type: String
+    },
+    cep: {
+      type: String
+    }
+  },
 
-        address: {
-            street: {
-                type: String
-            },
-            number: {
-                type: String
-            },
-            district: {
-                type: String
-            },
-            city: {
-                type: String
-            },
-            state: {
-                type: String
-            },
-            cep: {
-                type: String
-            }
-        },
+  salt: {
+    type: String
+  },
 
-        salt: {
-            type: String
-        },
+  recovery: {
+    type: String
+  },
 
-        recovery: {
-            type: String,
-        },
+  hierarchy: {
+    type: String,
+    default: 0
+  },
 
-        hierarchy: {
-            type: String,
-            default: 0
-        },
+  excluded: {
+    type: Boolean,
+    default: false
+  }
 
-        excluded: {
-            type: Boolean,
-            default: false
-        }
-
-    }, { timestamps: true })
+}, { timestamps: true })
 usersSchema.plugin(mongoosePaginate, uniqueValidator)
 
-
-
-
-/*login-register-recovery*/
+/* login-register-recovery */
 usersSchema.methods.passwordHash = async (password, User, Users = false) => {
-    if (!Users) {
-        let { salt } = User
+  if (!Users) {
+    let { salt } = User
 
-        salt = crypto.randomBytes(16).toString(`hex`)
-        User.password = verify.crypto(password, salt)
+    salt = crypto.randomBytes(16).toString('hex')
+    User.password = verify.crypto(password, salt)
 
-        User.save()
-    }
-    else {
-        return verify.crypto(password, User.salt)
-    }
+    User.save()
+  } else {
+    return verify.crypto(password, User.salt)
+  }
 }
 
 usersSchema.methods.verify = async (password, User) => {
-    let { salt } = User
-    return verify.crypto(password, salt) === User.password ? true : false
+  const { salt } = User
+  return verify.crypto(password, salt) === User.password
 }
 
 usersSchema.methods.recover = async (User, recovery) => {
-    User.recovery = recovery
-    User.save()
+  User.recovery = recovery
+  User.save()
 }
 
 usersSchema.methods.unsetRecover = async (User, password) => {
-    const
-        attributes = [User.recovery, User.password],
-        values = [``, usersSchema.methods.passwordHash(password, User)]
+  const
+    attributes = [User.recovery, User.password]
+  const values = ['', usersSchema.methods.passwordHash(password, User)]
 
-    for (let i = 0; i < attributes.length - 1; i++) {
-        attributes[i] = values[i]
-    }
+  for (let i = 0; i < attributes.length - 1; i++) {
+    attributes[i] = values[i]
+  }
 
-    User.save()
+  User.save()
 }
 
-
-/*account*/
+/* account */
 usersSchema.methods.accountDelete = async (User) => {
-    const
-        attributes = [User.password, User.salt, User.recovery, User.excluded],
-        values = [``, ``, ``, true]
+  const
+    attributes = [User.password, User.salt, User.recovery, User.excluded]
+  const values = ['', '', '', true]
 
-    for (let i = 0; i < attributes.length - 1; i++) {
-        attributes[i] = values[i]
-    }
+  for (let i = 0; i < attributes.length - 1; i++) {
+    attributes[i] = values[i]
+  }
 
-    User.save()
+  User.save()
 }
 
-
-/*session*/
+/* session */
 usersSchema.methods.sessionStore = async (request, response) => {
-    const { session, user } = request
+  const { session, user } = request
 
-    session.user = user
+  session.user = user
 
-    response.cookie('@sessionID', request.sessionID, { httpOnly: true, sameSite: true })
-    response.send({ authentication: { authenticated: true }, success: userMessages.LoginSuccess })
+  response.cookie('@sessionID', request.sessionID, { httpOnly: true, sameSite: true })
+  response.send({ authentication: { authenticated: true }, success: userMessages.LoginSuccess })
 }
 
 usersSchema.methods.sessionUpdate = async (request, response, User) => {
-    let { user } = request.session
+  const { user } = request.session
 
-    for (const key in User) { user[key] = User[key] }
+  for (const key in User) { user[key] = User[key] }
 
-    response.send({ success: userMessages.SessionUpdateSuccess })
+  response.send({ success: userMessages.SessionUpdateSuccess })
 }
 
 usersSchema.methods.sessionLogout = async (request, response) => {
-    const { session } = request
-    session.destroy(error => { response.redirect(`/login`) })
+  const { session } = request
+  session.destroy(error => { response.redirect('/login') })
 }
-module.exports = mongoose.model(`users`, usersSchema)
+module.exports = mongoose.model('users', usersSchema)

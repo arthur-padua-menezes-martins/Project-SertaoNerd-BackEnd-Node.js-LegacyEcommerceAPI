@@ -1,65 +1,59 @@
 const
-    mongoose = require(`mongoose`),
-    variations = mongoose.model(`variations`)
+  mongoose = require('mongoose')
+const variations = mongoose.model('variations')
 
 module.exports =
 {
-    availableQuantity: async (Cart) => {
-        try {
+  availableQuantity: async (Cart) => {
+    try {
+      let validator, cart
 
-            let validator, cart
+      cart = await Promise.all(Cart.map(async iterator => {
+        iterator.variations = await variations.findById(iterator.variations || iterator.variations._id)
+        return iterator
+      }))
 
-            cart = await Promise.all(Cart.map(async iterator => {
-                iterator.variations = await variations.findById(iterator.variations || iterator.variations._id)
-                return iterator
-            }))
+      cart.forEach(async iterator => {
+        if (iterator.variations.quantityInStock && iterator.variations.quantityInStock > iterator.quantity) {
+          validator = true
+        } else {
+          validator = false
+        }
+      })
 
-            cart.forEach(async iterator => {
-                if (iterator.variations.quantityInStock && iterator.variations.quantityInStock > iterator.quantity) {
-                    validator = true
-                } else {
-                    validator = false
-                }
-            })
+      return validator
+    } catch (error) { return false }
+  },
 
-            return validator
+  updateQuantityInStock: async (Requests, type) => {
+    try {
+      await Promise.all(Requests.cart.map(async iterator => {
+        iterator.variations = await variations.findById(iterator.variations._id || iterator.variations)
 
-        } catch (error) { return false }
-    },
+        let { quantityInStock, quantityInTransaction } = iterator.variations; const { quantity } = iterator
 
-    updateQuantityInStock: async (Requests, type) => {
-        try {
+        if (type == 'save') {
+          quantityInStock -= quantity
+          quantityInTransaction += quantity
+        }
 
-            await Promise.all(Requests.cart.map(async iterator => {
+        if (type == 'confirm') {
+          quantityInTransaction -= quantity
+        }
 
-                iterator.variations = await variations.findById(iterator.variations._id || iterator.variations)
+        if (type == 'canceled') {
+          quantityInStock += quantity
+          quantityInTransaction -= quantity
+        }
 
-                let { quantityInStock, quantityInTransaction } = iterator.variations, { quantity } = iterator
+        iterator.variations.quantityInStock = quantityInStock
+        iterator.variations.quantityInTransaction = quantityInTransaction
 
-                if (type == `save`) {
-                    quantityInStock -= quantity
-                    quantityInTransaction += quantity
-                }
+        await iterator.variations.save()
+        return iterator
+      }))
 
-                if (type == `confirm`) {
-                    quantityInTransaction -= quantity
-                }
-
-                if (type == `canceled`) {
-                    quantityInStock += quantity
-                    quantityInTransaction -= quantity
-                }
-
-                iterator.variations.quantityInStock = quantityInStock
-                iterator.variations.quantityInTransaction = quantityInTransaction
-
-                await iterator.variations.save()
-                return iterator
-
-            }))
-
-            return true
-
-        } catch (error) { console.error(error) }
-    }
+      return true
+    } catch (error) { console.error(error) }
+  }
 }

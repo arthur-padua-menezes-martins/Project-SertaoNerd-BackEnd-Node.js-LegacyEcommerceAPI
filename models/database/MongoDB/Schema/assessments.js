@@ -1,45 +1,39 @@
 const
 
-/*DATABASE MODULES*/
-    mongoose = require(`mongoose`),
-    Schema = mongoose.Schema,
+  /* DATABASE MODULES */
+  mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-
-
-    
-assessmentsSchema = new mongoose.Schema
+const assessmentsSchema = new mongoose.Schema
 ({
 
-    name:
+  name:
     {
-        type : String 
+      type: String
     },
 
-    stars:
+  stars:
     {
-        type : String 
+      type: String
     },
 
-    message: 
-    { 
-        type : String 
-    },
-
-    users:
+  message:
     {
-        type: Schema.Types.ObjectId, 
-        ref: `users` 
+      type: String
     },
 
-    products:
+  users:
     {
-        type: Schema.Types.ObjectId, 
-        ref: `products` 
+      type: Schema.Types.ObjectId,
+      ref: 'users'
     },
 
-}, { timestamps : true } )
+  products:
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'products'
+    }
 
+}, { timestamps: true })
 
-
-
-module.exports = mongoose.model( `assessments`, assessmentsSchema )
+module.exports = mongoose.model('assessments', assessmentsSchema)

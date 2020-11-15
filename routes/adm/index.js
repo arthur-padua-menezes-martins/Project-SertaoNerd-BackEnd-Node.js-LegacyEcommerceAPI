@@ -1,62 +1,52 @@
-/*BASIC MODULES*/
+/* BASIC MODULES */
 const
-    router = require(`express`).Router(),
+  router = require('express').Router()
 
-/*FILES MODULES*/
-    multer = require(`multer`),
-    multerConfig = require(`../../helpers/multer/multerConfig.js`),
-    upload = multer( multerConfig ),
+/* FILES MODULES */
+const multer = require('multer')
+const multerConfig = require('../../helpers/multer/multerConfig.js')
+const upload = multer(multerConfig)
 
-/*AUTHENTICATION MODULES*/ 
-    admController = require(`../../controllers/adm/index.js`),
-    adm = new admController()
-
-
-
-
+/* AUTHENTICATION MODULES */
+const admController = require('../../controllers/adm/index.js')
+const adm = new admController()
 
 const { resolve } = require('path')
 const up = multer({
-    dest : resolve( __dirname, '..', '..', 'uploads' )
+  dest: resolve(__dirname, '..', '..', 'uploads')
 })
 
+/* SEARCH */
+router.get('/search', adm.search)
 
+router.get('/search/users/:_id?', adm.searchUsers)
 
-/*SEARCH*/
-router.get( `/search`, adm.search )
+router.get('/search/assessments/:_id?', adm.searchAssessments)
 
-router.get( `/search/users/:_id?`, adm.searchUsers ) 
+/* CONTROL */
+router.get('/control', adm.control)
 
-router.get( `/search/assessments/:_id?`, adm.searchAssessments )
- 
+router.get('/control/users/:_id?', adm.controlUsers)
+router.post('/control/users/:_id?', adm.controlUsers)
 
+router.post('/control/assessments', adm.controlAssessments)
 
-/*CONTROL*/
-router.get( `/control`, adm.control )
+router.post('/control/email', adm.controlEmail)
 
-router.get( `/control/users/:_id?`, adm.controlUsers )
-router.post( `/control/users/:_id?`, adm.controlUsers )
+router.get('/control/categories/:_id?', adm.controlCategories)
+router.post('/control/categories/:_id?', adm.controlCategories)
 
-router.post( `/control/assessments`, adm.controlAssessments )
+router.get('/control/products/:_id?', adm.controlProducts)
+router.post('/control/products/:_id?', upload.array('file'), adm.controlProducts)
 
-router.post( `/control/email`, adm.controlEmail )
+router.post('/control/variations/:_id?', upload.array('file', 6), adm.controlVariations)// upload.array(`file`)
 
-router.get( `/control/categories/:_id?`, adm.controlCategories )
-router.post( `/control/categories/:_id?`, adm.controlCategories )
+router.get('/control/requests/:_id?', adm.controlRequests)
+router.post('/control/requests/:_id?', adm.controlRequests)
 
-router.get( `/control/products/:_id?`, adm.controlProducts )
-router.post( `/control/products/:_id?`, upload.array(`file`), adm.controlProducts )
+router.post('/control/deliveries/:_id?', adm.controlDeliveries)
 
-router.post( `/control/variations/:_id?`, upload.array(`file`,6), adm.controlVariations )//upload.array(`file`)
+router.post('/control/payments/:_id?', adm.controlPayments)
 
-router.get( `/control/requests/:_id?`, adm.controlRequests )
-router.post( `/control/requests/:_id?`, adm.controlRequests )
-
-router.post( `/control/deliveries/:_id?`, adm.controlDeliveries )
-
-router.post( `/control/payments/:_id?`, adm.controlPayments ) 
-
-
-/*EXPORTS*/
+/* EXPORTS */
 module.exports = router
-

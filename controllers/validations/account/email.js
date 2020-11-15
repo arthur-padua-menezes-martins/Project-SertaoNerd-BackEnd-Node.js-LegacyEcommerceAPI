@@ -1,11 +1,9 @@
-/*HELPERS MODULES*/ 
-const userMessages = require(`../../../helpers/message/userMessages.js`)
+/* HELPERS MODULES */
+const userMessages = require('../../../helpers/message/userMessages.js')
 
-
-module.exports = 
+module.exports =
 {
-    email : ( email ) => 
-    {
-        return email.match( /\S+@\S+\.\S+/ )  ?  true  :  userMessages.EmailValidator
-    }
+  email: (email) => {
+    return email.match(/\S+@\S+\.\S+/) ? true : userMessages.EmailValidator
+  }
 }

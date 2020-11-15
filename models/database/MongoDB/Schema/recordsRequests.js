@@ -1,31 +1,30 @@
 const
-    mongoose = require(`mongoose`),
-    Schema = mongoose.Schema,
+  mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
+const recordsRequestsSchema = new Schema({
 
-    recordsRequestsSchema = new Schema({
+  type: {
+    type: String
+  },
 
-        type: {
-            type: String
-        },
+  situation: {
+    type: Object
+  },
 
-        situation: {
-            type: Object
-        },
+  payload: {
+    type: Object
+  },
 
-        payload: {
-            type: Object
-        },
+  requests: {
+    type: Schema.Types.ObjectId,
+    ref: 'requests'
+  },
 
-        requests: {
-            type: Schema.Types.ObjectId,
-            ref: `requests`
-        },
+  whatsapp: {
+    type: Boolean,
+    default: false
+  }
 
-        whatsapp: {
-            type: Boolean,
-            default: false
-        }
-
-    }, { timestamps: true })
-module.exports = mongoose.model(`records_requests`, recordsRequestsSchema)
+}, { timestamps: true })
+module.exports = mongoose.model('records_requests', recordsRequestsSchema)

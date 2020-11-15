@@ -1,29 +1,17 @@
-const crypto = require(`crypto`)
+const crypto = require('crypto')
 
 module.exports = {
 
-    crypto: (password, salt) => {
+  crypto: (password, salt) => {
+    return crypto.pbkdf2Sync(password, salt, 8, 256, 'sha512').toString('hex')
+  },
 
-        return crypto.pbkdf2Sync(password, salt, 8, 256, `sha512`).toString(`hex`)
+  notNull: value => {
+    if (Boolean(value) && Boolean(value[0])) { return true } else { return false }
+  },
 
-    },
-
-    notNull: value => {
-
-        if (Boolean(value) && Boolean(value[0]))
-            return true
-        else
-            return false
-
-    },
-
-    every: (array, not = false) => {
-
-        if (not)
-            return !array.every((iterator) => { return Boolean(iterator) })
-        else
-            return array.every((iterator) => { return Boolean(iterator) })
-            
-    }
+  every: (array, not = false) => {
+    if (not) { return !array.every((iterator) => { return Boolean(iterator) }) } else { return array.every((iterator) => { return Boolean(iterator) }) }
+  }
 
 }

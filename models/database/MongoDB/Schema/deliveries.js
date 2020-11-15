@@ -1,66 +1,65 @@
 const
-    mongoose = require(`mongoose`),
-    mongoosePaginate = require(`mongoose-paginate`),
-    Schema = mongoose.Schema,
+  mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate')
+const Schema = mongoose.Schema
 
+const deliveriesSchema = new Schema({
 
-    deliveriesSchema = new Schema({
+  status: [{
+    type: Number
+  }],
 
-        status: [{
-            type: Number
-        }],
+  trackingCode: {
+    type: String
+  },
 
-        trackingCode: {
-            type: String
-        },
+  type: {
+    type: String
+  },
 
-        type: {
-            type: String
-        },
+  value: {
+    type: Number
+  },
 
-        value: {
-            type: Number
-        },
+  deadline: {
+    type: Number
+  },
 
-        deadline: {
-            type: Number
-        },
+  address: {
+    street: {
+      type: String
+    },
+    number: {
+      type: String
+    },
+    district: {
+      type: String
+    },
+    city: {
+      type: String
+    },
+    state: {
+      type: String
+    },
+    cep: {
+      type: String
+    }
+  },
 
-        address: {
-            street: {
-                type: String
-            },
-            number: {
-                type: String
-            },
-            district: {
-                type: String
-            },
-            city: {
-                type: String
-            },
-            state: {
-                type: String
-            },
-            cep: {
-                type: String
-            }
-        },
+  payload: {
+    type: Object
+  },
 
-        payload: {
-            type: Object
-        },
+  requests: {
+    type: Schema.Types.ObjectId,
+    ref: 'requests'
+  },
 
-        requests: {
-            type: Schema.Types.ObjectId,
-            ref: `requests`
-        },
+  whatsapp: {
+    type: Boolean,
+    default: false
+  }
 
-        whatsapp: {
-            type: Boolean,
-            default: false
-        }
-
-    }, { timestamps: true })
+}, { timestamps: true })
 deliveriesSchema.plugin(mongoosePaginate)
-module.exports = mongoose.model(`deliveries`, deliveriesSchema)
+module.exports = mongoose.model('deliveries', deliveriesSchema)
