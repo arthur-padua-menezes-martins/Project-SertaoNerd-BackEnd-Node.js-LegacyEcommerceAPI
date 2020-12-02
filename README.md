@@ -1,33 +1,34 @@
 # **[ E-COMMERCE API ]**
 > # TECNOLOGIAS
 
-**TypeScript**
-* *escalabilidade do projeto*
-
-**jest**
-* *desenvolvimento guidado a testes*
-* *mitigação de bugs*
-
-**express**
-* *controlar requisições*
-
-**bcrypt**
-* *geração de hash*
-
-**jsonwebtoken**
-* *token de acesso*
-
+**Express**
+  **Bcrypt**
+  **Cors**
+  **Crypto Js**
+  **EJS ( template engine )**
+  **jsonwebtoken**
+  **Moment**
+  **Express Session**
+  **Morgan**
+  **Node Correios**
+  **Node PagSeguro**
+  **Nodemailer**
+  
+**Mongoose**
+  **Mongoose Paginate**
+  
 <br/></br></br>
 
-> # ROTAS
+> # PROJETO
 
-**/api/signup - POST**
+**API**
+
 * 🏆 *cadastro de usuário*
-* ✔️ *log de erros*
-* ✔️ *verificar a procedência das informações*
-* ✔️ *verificar a disponibilidade de cadastro para as informções*
-* ✔️ *verificar a veracidade do e-mail perante os serviços de disporato*
-* ✔️ *confirmação do cadastro por e-mail*
+* ✔️ *validação de campos obrigatórios*
+* ✔️ *verificação preliminar da existância das informações*
+* ✔️ *encriptação de senha*
+* ✔️ *inserção das informções no banco de dados*
+* ✔️ *tratamento de erros*
 
 **/api/signin - POST**
 * 🏆 *autenticar informações e disponibilizar acessos*
