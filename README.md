@@ -114,9 +114,11 @@
 </br></br>
 **AVALIAÇÕES**
 </br></br>
+* 🏆 *listagem*</br>
+* ✔️ *listagem de avaliações do usuário*</br>
+* ❌ *listagem de avaliações do produto*</br>
 * 🏆 *criação*</br>
 * ✔️ *verificação de campos*</br>
-* ✔️ *busca por produto avaliado*</br>
 * ✔️ *definição e relacionamento de nova avaliação*</br>
 </br></br>
 * 🏆 *atualização*</br>
@@ -166,41 +168,3 @@
 * 🏆 *cancelamento de pedido*</br>
 * ✔️ *atualização do status de cancelamento do pedido*</br>
 * ✔️ *atualização da quantidade e disponibilidade dos produtos*</br>
-
-
-
-
-
-
-
-**/api/signin - POST**
-* 🏆 *autenticar informações e disponibilizar acessos*
-* ✔️ *log de erros*
-* ✔️ *verificar a procedência das informações*
-* ✔️ *retornar o token de acesso*
-
-**/api/survey - POST**
-* 🏆 *autenticar informações e disponibilizar opções referentes à enquete*
-* ✔️ *log de erros*
-* ❌ *somente acesso administrativo*
-* ✔️ *verificar a procedência das informações (**question** e **answers**)*
-* ✔️ *criação da enquete*
-
-<br/></br></br>
-
-> # SUCCESS
-
-**2xx**
-* ✨ *200 ok, requisição completa e retorno das informações*
-* ✨ *201 created, requisição completa e criação de um novo recurso*
-* ✨ *202 accepted, requisição completa*
-* ✨ *204 no content, requisição completa e nenhum retorno*
-
-<br/></br></br>
-
-> # ERRORS
-
-
-⚠️
-**5xx**
-* 🐞 *500 server error, se ocorrer quaisquer erros do servidor*
