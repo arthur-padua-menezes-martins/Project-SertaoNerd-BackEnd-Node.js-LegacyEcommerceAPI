@@ -1,20 +1,20 @@
 # **[ E-COMMERCE API ]**
 > # TECNOLOGIAS
 
-**Express**
-  **Bcrypt**
-  **Cors**
-  **Crypto Js**
-  **EJS ( template engine )**
-  **jsonwebtoken**
-  **Moment**
-  **Express Session**
-  **Morgan**
-  **Node Correios**
-  **Node PagSeguro**
-  **Nodemailer**
-  
-**Mongoose**
+**Express**</br>
+  **Bcrypt**</br>
+  **Cors**</br>
+  **Crypto Js**</br>
+  **EJS ( template engine )**</br>
+  **jsonwebtoken**</br>
+  **Moment**</br>
+  **Express Session**</br>
+  **Morgan**</br>
+  **Node Correios**</br>
+  **Node PagSeguro**</br>
+  **Nodemailer**</br>
+</br></br>
+**Mongoose**</br>
   **Mongoose Paginate**
   
 <br/></br></br>
