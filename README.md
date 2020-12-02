@@ -6,9 +6,9 @@
 *  **Cors**</br>
 *  **Crypto Js**</br>
 *  **EJS**</br>
+*  **Express Session**</br>
 *  **jsonwebtoken**</br>
 *  **Moment**</br>
-*  **Express Session**</br>
 *  **Morgan**</br>  
 *  **Node Correios**</br>
 *  **Node PagSeguro**</br>
@@ -31,15 +31,17 @@
 * ✔️ *401 unauthorized, se as informações não forem autênticas*</br>
 * ✔️ *404 not found, se o conteúdo buscado não foi encontado*</br>
 * ✔️ *422 unprocessable, se a requisição não pode ser processada*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **MIDDLEWARE**
 </br></br>
 * 🏆 *autenticação*</br>
 * ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*</br>
 * ✔️ *liberação de determinadas rotas basenado-se no nível de acesso da conta*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **USUÁRIOS**
 </br></br>
 * 🏆 *registro de usuário*</br>
@@ -66,8 +68,9 @@
 * ✔️ *remoção do período de redefinição de senha*</br>
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informações no banco de dados*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **CONTA**
 </br></br>
 * 🏆 *atualização*</br>
@@ -77,8 +80,9 @@
 * 🏆 *desativação*</br>
 * ✔️ *atualização do status de desativação da conta*</br>
 * ✔️ *desativação da sessão*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **BUSCA**
 </br></br>
 * 🏆 *busca por termos*</br>
@@ -97,8 +101,9 @@
 * ✔️ *busca por diversos registros*
 * ✔️ *busca por determinado registro*
 * ✔️ *filtro por tipo, tags, categoria*
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **ENVIO DE E-MAIL**
 </br></br>
 * 🏆 *configurações*</br>
@@ -108,8 +113,9 @@
 * ✔️ *leitura de arquivos (corpo do e-mail)*</br>
 * ✔️ *adição dos dados referentes ao determinado e-mail*</br>
 * ✔️ *disparo do e-mail*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **AVALIAÇÕES**
 </br></br>
 * 🏆 *listagem*</br>
@@ -123,8 +129,9 @@
 * 🏆 *atualização*</br>
 * ✔️ *verificação de campos*</br>
 * ✔️ *atualização das informações do banco de dados*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **ENTREGAS**
 </br></br>
 * 🏆 *integrações*</br>
@@ -133,8 +140,9 @@
 </br></br>
 * 🏆 *cálculo do frete*</br>
 * ✔️ *utilização do CEP de destino e dimensões dos produtos*</br>
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **PAGAMENTOS**
 </br></br>
 * 🏆 *integrações*</br>
@@ -148,8 +156,9 @@
 * 🏆 *método de pagamento*</br>
 * ❌ *PRODUÇÃO: boleto ou cartão*
 * ✔️ *DESENVOLVIMENTO: boleto ou cartão*
-</br></br>
-</br></br>
+</br></br></br></br>
+
+
 **PEDIDOS**
 </br></br>
 * 🏆 *novo pedido*</br>
