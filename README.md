@@ -71,14 +71,14 @@
 </br></br>
 **CONTA**
 </br></br>
-* 🏆 *atualização de informações da conta*</br>
+* 🏆 *atualização de informações*</br>
 * ✔️ *armazenamento de informções pertinentes a conta*</br>
 * ✔️ *atualização das informções do banco de dados*</br>
 * ✔️ *atualização das informções da sessão*</br>
 </br></br>
-* 🏆 *remoção da conta*</br>
+* 🏆 *desativação*</br>
 * ✔️ *atualização do status de desativação da conta*</br>
-* ✔️ *remoção da sessão*</br>
+* ✔️ *desativação da sessão*</br>
 </br></br>
 </br></br>
 **BUSCA**
@@ -90,23 +90,24 @@
 * ✔️ *busca por registros relacionados (populate)*
 * ✔️ *busca por determinado número de registros (paginação)*
 </br></br>
-* 🏆 *busca geral de produtos*</br>
+* 🏆 *busca geral*</br>
 * ✔️ *definição do tipo de ordenação (sort)*</br>
 * ✔️ *definição do número de registros retornados (offset, limit, skip)*
 * ✔️ *busca por determinadas informações (select)*
 * ✔️ *busca por registros relacionados (populate)*
 * ✔️ *busca por determinado número de registros (paginação)*
+* ✔️ *busca por diversos registros*
 * ✔️ *busca por determinado registro*
 * ✔️ *filtro por tipo, tags, categoria*
 </br></br>
 </br></br>
 **ENVIO DE E-MAIL**
 </br></br>
-* 🏆 *definição de informações*</br>
+* 🏆 *configuraçãos*</br>
 * ✔️ *definição do host / serviço de envio, porta, tipo de segurança, dados da conta*</br>
 * 🏆 *envio*</br>
 * ✔️ *definição dos parâmetros obrigatórios*</br>
-* ✔️ *leitura de arquivos (corpo do e-mail / HTML)*</br>
+* ✔️ *leitura de arquivos (corpo do e-mail)*</br>
 * ✔️ *aplicação dinâmica dos dados referentes ao envio do determinado e-mail*</br>
 * ✔️ *disparo do e-mail*</br>
 </br></br>
@@ -114,8 +115,9 @@
 **ENTREGAS**
 </br></br>
 * 🏆 *integrações*</br>
-* ✔️ *API dos Correios*
-* 🏆 *calculo do frete*</br>
+* ✔️ *PRODUÇÃO: Correios*
+* ✔️ *DESENVOLVIMENTO: Correios*
+* 🏆 *cálculo do frete*</br>
 * ✔️ *utilização de CEP de destino e das dimensões dos produtos*</br>
 </br></br>
 </br></br>
@@ -127,7 +129,7 @@
 * 🏆 *pagamento*</br>
 * ❌ *PRODUÇÃO: online*
 * ✔️ *DESENVOLVIMENTO: online*
-* 🏆 *tipo de pagamento*</br>
+* 🏆 *método de pagamento*</br>
 * ❌ *PRODUÇÃO: boleto ou cartão*
 * ✔️ *DESENVOLVIMENTO: boleto ou cartão*
 </br></br>
