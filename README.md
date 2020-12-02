@@ -16,11 +16,11 @@
   **Node PagSeguro**</br>
   **Nodemailer**</br>
   
-<br/></br></br>
+</br></br></br>
 
 > # FUNCIONALIDADES
-
-**USUÁRIOS**
+</br>
+**GERAIS**
 * 🏆 *tratamento de erros*
 * ✔️ *direcionamento para rotas exclusivas ao tratamento de erros*
 * ✔️ *acoplamento de código de status baseando-se no tipo do erro*
@@ -29,32 +29,34 @@
 * ✔️ *401 unauthorized, se as informações não forem autênticas*
 * ✔️ *404 not found, se o conteúdo buscado não foi encontado*
 * ✔️ *422 unprocessable, se a requisição não pode ser processada*
-
+</br></br>
+**USUÁRIOS**
+</br>
 * 🏆 *registro de usuário*
 * ✔️ *validação de campos obrigatórios*
 * ✔️ *verificação preliminar da existância das informações*
 * ✔️ *encriptação de senha*
 * ✔️ *inserção das informções no banco de dados*
-
+</br>
 * 🏆 *login de usuário*
 * ✔️ *validação de campos obrigatórios*
 * ✔️ *verificação preliminar da existância das informações*
 * ✔️ *decodificação e verificação da compatibilidade entre senha cadastrada e senha enviada*
 * ✔️ *criação de sessão*
-
+</br>
 * 🏆 *pedido de redefinição de senha*
 * ✔️ *validação de campos obrigatórios*
 * ✔️ *verificação preliminar da existância das informações*
 * ✔️ *definição do período para redefinição de senha*
 * ✔️ *envio de e-mail com a chave necessária para a redefinição da senha*
-
+</br>
 * 🏆 *redefinição de senha*
 * ✔️ *validação de campos obrigatórios*
 * ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*
 * ✔️ *retirada do período de redefinição de senha*
 * ✔️ *encriptação de senha*
 * ✔️ *inserção das informções no banco de dados*
-
+</br>
 * 🏆 *autenticação*
 * ✔️ *verificação de campos obrigatórios*
 * ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*
