@@ -108,7 +108,25 @@
 * ✔️ *definição dos parâmetros obrigatórios*</br>
 * ✔️ *leitura de arquivos (corpo do e-mail / HTML)*</br>
 * ✔️ *aplicação dinâmica dos dados referentes ao envio do determinado e-mail*</br>
-
+* ✔️ *disparo do e-mail*</br>
+</br></br>
+</br></br>
+**PEDIDOS REALIZADOS**
+</br></br>
+* 🏆 *novo pedido*</br>
+* ❌ *pagamento por boleto bancário ou cartão*</br>
+* ✔️ *recebimento de informações iniciais sobre o carrinho, entrega e pagamento*</br>
+* ✔️ *verificação da disponibilidade da quantidade de produtos selecionados*</br>
+* ✔️ *definição e relacionamento de um novo pedido, entrega e pagamento*</br>
+</br></br>
+* 🏆 *visualização dos pedidos*</br>
+* ✔️ *seleção de informações gerais dos pedidos*</br>
+</br></br>
+* 🏆 *visualização do pedido*</br>
+* ✔️ *seleção de informações da conta, carrinho, entrega e pagamento do pedido*</br>
+</br></br>
+* 🏆 *visualização do carrinho*</br>
+* ✔️ *seleção dos dados do carrinho do pedido*</br>
 
 
 
