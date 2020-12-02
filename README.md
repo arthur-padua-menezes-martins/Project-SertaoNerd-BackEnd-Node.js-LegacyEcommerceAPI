@@ -68,6 +68,29 @@
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informções no banco de dados*</br>
 </br></br>
+</br></br>
+**CONTA**
+</br></br>
+* 🏆 *atualização de informações da conta*</br>
+* ✔️ *armazenamento de informções pertinentes a conta*</br>
+* ✔️ *atualização das informções do banco de dados*
+* ✔️ *atualização das informções da sessão*
+</br></br>
+* 🏆 *remoção de conta*</br>
+* ✔️ *atualização do status de desativação da conta*
+* ✔️ *remoção da sessão*
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
