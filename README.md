@@ -19,48 +19,49 @@
 </br></br></br>
 
 > # FUNCIONALIDADES
-</br>
+</br></br>
 **GERAIS**
-* 🏆 *tratamento de erros*
-* ✔️ *direcionamento para rotas exclusivas ao tratamento de erros*
-* ✔️ *acoplamento de código de status baseando-se no tipo do erro*
-* ✔️ *envio de mensagem personalziada baseando-se no tipo de erro*
-* ✔️ *400 bad request, se campos obrigarórios forem omitidos ou inválidos*
-* ✔️ *401 unauthorized, se as informações não forem autênticas*
-* ✔️ *404 not found, se o conteúdo buscado não foi encontado*
-* ✔️ *422 unprocessable, se a requisição não pode ser processada*
+</br></br>
+* 🏆 *tratamento de erros*</br>
+* ✔️ *direcionamento para rotas exclusivas ao tratamento de erros*</br>
+* ✔️ *acoplamento de código de status baseando-se no tipo do erro*</br>
+* ✔️ *envio de mensagem personalziada baseando-se no tipo de erro*</br>
+* ✔️ *400 bad request, se campos obrigarórios forem omitidos ou inválidos*</br>
+* ✔️ *401 unauthorized, se as informações não forem autênticas*</br>
+* ✔️ *404 not found, se o conteúdo buscado não foi encontado*</br>
+* ✔️ *422 unprocessable, se a requisição não pode ser processada*</br>
 </br></br>
 **USUÁRIOS**
-</br>
-* 🏆 *registro de usuário*
-* ✔️ *validação de campos obrigatórios*
-* ✔️ *verificação preliminar da existância das informações*
-* ✔️ *encriptação de senha*
+</br></br>
+* 🏆 *registro de usuário*</br>
+* ✔️ *validação de campos obrigatórios*</br>
+* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *encriptação de senha*</br></br>
 * ✔️ *inserção das informções no banco de dados*
-</br>
-* 🏆 *login de usuário*
-* ✔️ *validação de campos obrigatórios*
-* ✔️ *verificação preliminar da existância das informações*
-* ✔️ *decodificação e verificação da compatibilidade entre senha cadastrada e senha enviada*
-* ✔️ *criação de sessão*
-</br>
-* 🏆 *pedido de redefinição de senha*
-* ✔️ *validação de campos obrigatórios*
-* ✔️ *verificação preliminar da existância das informações*
-* ✔️ *definição do período para redefinição de senha*
-* ✔️ *envio de e-mail com a chave necessária para a redefinição da senha*
-</br>
-* 🏆 *redefinição de senha*
-* ✔️ *validação de campos obrigatórios*
-* ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*
-* ✔️ *retirada do período de redefinição de senha*
-* ✔️ *encriptação de senha*
-* ✔️ *inserção das informções no banco de dados*
-</br>
-* 🏆 *autenticação*
-* ✔️ *verificação de campos obrigatórios*
-* ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*
-* ✔️ *definição de usuário autenticado ou não autenticado*
+</br></br>
+* 🏆 *login de usuário*</br>
+* ✔️ *validação de campos obrigatórios*</br>
+* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *decodificação e verificação da compatibilidade entre senha cadastrada e senha enviada*</br>
+* ✔️ *criação de sessão*</br>
+</br></br>
+* 🏆 *pedido de redefinição de senha*</br>
+* ✔️ *validação de campos obrigatórios*</br>
+* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *definição do período para redefinição de senha*</br>
+* ✔️ *envio de e-mail com a chave necessária para a redefinição da senha*</br>
+</br></br>
+* 🏆 *redefinição de senha*</br>
+* ✔️ *validação de campos obrigatórios*</br>
+* ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*</br>
+* ✔️ *retirada do período de redefinição de senha*</br>
+* ✔️ *encriptação de senha*</br>
+* ✔️ *inserção das informções no banco de dados*</br>
+</br></br>
+* 🏆 *autenticação*</br>
+* ✔️ *verificação de campos obrigatórios*</br>
+* ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*</br>
+* ✔️ *definição de usuário autenticado ou não autenticado*</br>
 
 
 
