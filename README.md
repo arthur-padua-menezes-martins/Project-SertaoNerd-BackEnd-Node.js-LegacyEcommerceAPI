@@ -111,13 +111,34 @@
 * ✔️ *disparo do e-mail*</br>
 </br></br>
 </br></br>
-**PEDIDOS REALIZADOS**
+**ENTREGAS**
+</br></br>
+* 🏆 *integrações*</br>
+* ✔️ *API dos Correios*
+* 🏆 *calculo do frete*</br>
+* ✔️ *utilização de CEP de destino e das dimensões dos produtos*</br>
+</br></br>
+</br></br>
+**PAGAMENTOS**
+</br></br>
+* 🏆 *integrações*</br>
+* ❌ *PRODUÇÃO: PagSeguro*
+* ✔️ *DESENVOLVIMENTO: PagSeguro SANDBOX*
+* 🏆 *pagamento*</br>
+* ❌ *PRODUÇÃO: online*
+* ✔️ *DESENVOLVIMENTO: online*
+* 🏆 *tipo de pagamento*</br>
+* ❌ *PRODUÇÃO: boleto ou cartão*
+* ✔️ *DESENVOLVIMENTO: boleto ou cartão*
+</br></br>
+</br></br>
+**PEDIDOS**
 </br></br>
 * 🏆 *novo pedido*</br>
-* ❌ *pagamento por boleto bancário ou cartão*</br>
 * ✔️ *recebimento de informações iniciais sobre o carrinho, entrega e pagamento*</br>
 * ✔️ *verificação da disponibilidade da quantidade de produtos selecionados*</br>
 * ✔️ *definição e relacionamento de um novo pedido, entrega e pagamento*</br>
+* ✔️ *atualização da quantidade e disponibilidade dos produtos*</br>
 </br></br>
 * 🏆 *visualização dos pedidos*</br>
 * ✔️ *seleção de informações gerais dos pedidos*</br>
@@ -127,7 +148,10 @@
 </br></br>
 * 🏆 *visualização do carrinho*</br>
 * ✔️ *seleção dos dados do carrinho do pedido*</br>
-
+</br></br>
+* 🏆 *cancelamento de pedido*</br>
+* ✔️ *atualização do status de cancelamento do pedido*</br>
+* ✔️ *atualização da quantidade e disponibilidade dos produtos*</br>
 
 
 
