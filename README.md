@@ -98,12 +98,16 @@
 * ✔️ *busca por determinado número de registros (paginação)*
 * ✔️ *busca por determinado registro*
 * ✔️ *filtro por tipo, tags, categoria*
-
-
-
-
-
-
+</br></br>
+</br></br>
+**ENVIO DE E-MAIL**
+</br></br>
+* 🏆 *definição de informações*</br>
+* ✔️ *definição do host / serviço de envio, porta, tipo de segurança, dados da conta*</br>
+* 🏆 *envio*</br>
+* ✔️ *definição dos parâmetros obrigatórios*</br>
+* ✔️ *leitura de arquivos (corpo do e-mail / HTML)*</br>
+* ✔️ *aplicação dinâmica dos dados referentes ao envio do determinado e-mail*</br>
 
 
 
