@@ -31,6 +31,16 @@
 * ✔️ *404 not found, se o conteúdo buscado não foi encontado*</br>
 * ✔️ *422 unprocessable, se a requisição não pode ser processada*</br>
 </br></br>
+</br></br>
+**MIDDLEWARE**
+</br></br>
+* 🏆 *autenticação*</br>
+* ✔️ *verificação de campos obrigatórios*</br>
+* ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*</br>
+* ✔️ *definição de usuário autenticado*</br>
+* ✔️ *liberação de determinadas rotas basenado-se no nível de acesso da conta*</br>
+</br></br>
+</br></br>
 **USUÁRIOS**
 </br></br>
 * 🏆 *registro de usuário*</br>
@@ -58,10 +68,7 @@
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informções no banco de dados*</br>
 </br></br>
-* 🏆 *autenticação*</br>
-* ✔️ *verificação de campos obrigatórios*</br>
-* ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*</br>
-* ✔️ *definição de usuário autenticado ou não autenticado*</br>
+
 
 
 
