@@ -2,19 +2,20 @@
 > # TECNOLOGIAS
 
 **Express**</br>
-  **Bcrypt**</br>
-  **Cors**</br>
-  **Crypto Js**</br>
-  **EJS**</br>
-  **jsonwebtoken**</br>
-  **Moment**</br>
-  **Express Session**</br>
-  **Mongoose**</br>
-  **Mongoose Paginate**</br>
-  **Morgan**</br>  
-  **Node Correios**</br>
-  **Node PagSeguro**</br>
-  **Nodemailer**</br>
+*  **Bcrypt**</br>
+*  **Cors**</br>
+*  **Crypto Js**</br>
+*  **EJS**</br>
+*  **jsonwebtoken**</br>
+*  **Moment**</br>
+*  **Express Session**</br>
+*  **Morgan**</br>  
+*  **Node Correios**</br>
+*  **Node PagSeguro**</br>
+*  **Nodemailer**</br>
+
+**Mongoose**</br>
+*  **Mongoose Paginate**</br>
   
 </br></br></br>
 
