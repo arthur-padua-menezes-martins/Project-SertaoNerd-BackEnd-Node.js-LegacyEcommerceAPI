@@ -5,12 +5,12 @@
   **Bcrypt**</br>
   **Cors**</br>
   **Crypto Js**</br>
-  **EJS ( template engine )**</br>
+  **EJS**</br>
   **jsonwebtoken**</br>
   **Moment**</br>
   **Express Session**</br>
   **Mongoose**</br>
-  **Mongoose Paginate**
+  **Mongoose Paginate**</br>
   **Morgan**</br>  
   **Node Correios**</br>
   **Node PagSeguro**</br>
@@ -25,7 +25,7 @@
 * 🏆 *tratamento de erros*</br>
 * ✔️ *direcionamento para rotas exclusivas ao tratamento de erros*</br>
 * ✔️ *acoplamento de código de status baseando-se no tipo do erro*</br>
-* ✔️ *envio de mensagem personalziada baseando-se no tipo de erro*</br>
+* ✔️ *envio de mensagem personalizada baseando-se no tipo de erro*</br>
 * ✔️ *400 bad request, se campos obrigarórios forem omitidos ou inválidos*</br>
 * ✔️ *401 unauthorized, se as informações não forem autênticas*</br>
 * ✔️ *404 not found, se o conteúdo buscado não foi encontado*</br>
@@ -35,9 +35,7 @@
 **MIDDLEWARE**
 </br></br>
 * 🏆 *autenticação*</br>
-* ✔️ *verificação de campos obrigatórios*</br>
 * ✔️ *busca por sessões existentes e compatíveis com os dados recebidos*</br>
-* ✔️ *definição de usuário autenticado*</br>
 * ✔️ *liberação de determinadas rotas basenado-se no nível de acesso da conta*</br>
 </br></br>
 </br></br>
@@ -46,12 +44,12 @@
 * 🏆 *registro de usuário*</br>
 * ✔️ *validação de campos obrigatórios*</br>
 * ✔️ *verificação preliminar da existância das informações*</br>
-* ✔️ *encriptação de senha*</br></br>
+* ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informações no banco de dados*
 </br></br>
 * 🏆 *login de usuário*</br>
 * ✔️ *validação de campos obrigatórios*</br>
-* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *verificação preliminar da existância das informações e disponibilidade de acesso à conta*</br>
 * ✔️ *decodificação e verificação da compatibilidade entre senha cadastrada e senha enviada*</br>
 * ✔️ *criação de sessão*</br>
 </br></br>
@@ -64,7 +62,7 @@
 * 🏆 *redefinição de senha*</br>
 * ✔️ *validação de campos obrigatórios*</br>
 * ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*</br>
-* ✔️ *retirada do período de redefinição de senha*</br>
+* ✔️ *remoção do período de redefinição de senha*</br>
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informações no banco de dados*</br>
 </br></br>
@@ -72,7 +70,6 @@
 **CONTA**
 </br></br>
 * 🏆 *atualização*</br>
-* ✔️ *armazenamento de informações pertinentes a conta*</br>
 * ✔️ *atualização das informações do banco de dados*</br>
 * ✔️ *atualização das informações da sessão*</br>
 </br></br>
@@ -86,9 +83,9 @@
 * 🏆 *busca por termos*</br>
 * ✔️ *definição do tipo de ordenação (sort)*</br>
 * ✔️ *definição do número de registros retornados (offset, limit, skip)*
-* ✔️ *busca por diversos segmentos da mesma frase (termos)*
 * ✔️ *busca por registros relacionados (populate)*
 * ✔️ *busca por determinado número de registros (paginação)*
+* ✔️ *busca por diversos segmentos / termos*
 </br></br>
 * 🏆 *busca geral*</br>
 * ✔️ *definição do tipo de ordenação (sort)*</br>
@@ -103,12 +100,12 @@
 </br></br>
 **ENVIO DE E-MAIL**
 </br></br>
-* 🏆 *configuraçãos*</br>
+* 🏆 *configurações*</br>
 * ✔️ *definição do host / serviço de envio, porta, tipo de segurança, dados da conta*</br>
 * 🏆 *envio*</br>
-* ✔️ *definição dos parâmetros obrigatórios*</br>
+* ✔️ *definição de parâmetros obrigatórios*</br>
 * ✔️ *leitura de arquivos (corpo do e-mail)*</br>
-* ✔️ *aplicação dinâmica dos dados referentes ao envio do determinado e-mail*</br>
+* ✔️ *adição dos dados referentes ao determinado e-mail*</br>
 * ✔️ *disparo do e-mail*</br>
 </br></br>
 </br></br>
@@ -117,9 +114,10 @@
 * 🏆 *listagem*</br>
 * ✔️ *listagem de avaliações do usuário*</br>
 * ❌ *listagem de avaliações do produto*</br>
+</br></br>
 * 🏆 *criação*</br>
 * ✔️ *verificação de campos*</br>
-* ✔️ *definição e relacionamento de nova avaliação*</br>
+* ✔️ *definição, relacionamento e inserção das informações no banco de dados*</br>
 </br></br>
 * 🏆 *atualização*</br>
 * ✔️ *verificação de campos*</br>
@@ -131,8 +129,9 @@
 * 🏆 *integrações*</br>
 * ✔️ *PRODUÇÃO: Correios*
 * ✔️ *DESENVOLVIMENTO: Correios*
+</br></br>
 * 🏆 *cálculo do frete*</br>
-* ✔️ *utilização de CEP de destino e das dimensões dos produtos*</br>
+* ✔️ *utilização do CEP de destino e dimensões dos produtos*</br>
 </br></br>
 </br></br>
 **PAGAMENTOS**
@@ -140,9 +139,11 @@
 * 🏆 *integrações*</br>
 * ❌ *PRODUÇÃO: PagSeguro*
 * ✔️ *DESENVOLVIMENTO: PagSeguro SANDBOX*
+</br></br>
 * 🏆 *pagamento*</br>
 * ❌ *PRODUÇÃO: online*
 * ✔️ *DESENVOLVIMENTO: online*
+</br></br>
 * 🏆 *método de pagamento*</br>
 * ❌ *PRODUÇÃO: boleto ou cartão*
 * ✔️ *DESENVOLVIMENTO: boleto ou cartão*
@@ -160,10 +161,10 @@
 * ✔️ *seleção de informações gerais dos pedidos*</br>
 </br></br>
 * 🏆 *visualização do pedido*</br>
-* ✔️ *seleção de informações da conta, carrinho, entrega e pagamento do pedido*</br>
+* ✔️ *seleção de informações da conta, carrinho, entrega e pagamento*</br>
 </br></br>
 * 🏆 *visualização do carrinho*</br>
-* ✔️ *seleção dos dados do carrinho do pedido*</br>
+* ✔️ *seleção dos dados do carrinho*</br>
 </br></br>
 * 🏆 *cancelamento de pedido*</br>
 * ✔️ *atualização do status de cancelamento do pedido*</br>
