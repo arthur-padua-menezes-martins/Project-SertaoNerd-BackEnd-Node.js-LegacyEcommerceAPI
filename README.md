@@ -73,14 +73,31 @@
 </br></br>
 * 🏆 *atualização de informações da conta*</br>
 * ✔️ *armazenamento de informções pertinentes a conta*</br>
-* ✔️ *atualização das informções do banco de dados*
-* ✔️ *atualização das informções da sessão*
+* ✔️ *atualização das informções do banco de dados*</br>
+* ✔️ *atualização das informções da sessão*</br>
 </br></br>
-* 🏆 *remoção de conta*</br>
-* ✔️ *atualização do status de desativação da conta*
-* ✔️ *remoção da sessão*
-
-
+* 🏆 *remoção da conta*</br>
+* ✔️ *atualização do status de desativação da conta*</br>
+* ✔️ *remoção da sessão*</br>
+</br></br>
+</br></br>
+**BUSCA**
+</br></br>
+* 🏆 *busca por termos*</br>
+* ✔️ *definição do tipo de ordenação (sort)*</br>
+* ✔️ *definição do número de registros retornados (offset, limit, skip)*
+* ✔️ *busca por diversos segmentos da mesma frase (termos)*
+* ✔️ *busca por registros relacionados (populate)*
+* ✔️ *busca por determinado número de registros (paginação)*
+</br></br>
+* 🏆 *busca geral de produtos*</br>
+* ✔️ *definição do tipo de ordenação (sort)*</br>
+* ✔️ *definição do número de registros retornados (offset, limit, skip)*
+* ✔️ *busca por determinadas informações (select)*
+* ✔️ *busca por registros relacionados (populate)*
+* ✔️ *busca por determinado número de registros (paginação)*
+* ✔️ *busca por determinado registro*
+* ✔️ *filtro por tipo, tags, categoria*
 
 
 
