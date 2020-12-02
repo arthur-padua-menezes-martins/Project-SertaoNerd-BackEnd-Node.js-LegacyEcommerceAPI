@@ -47,7 +47,7 @@
 * ✔️ *validação de campos obrigatórios*</br>
 * ✔️ *verificação preliminar da existância das informações*</br>
 * ✔️ *encriptação de senha*</br></br>
-* ✔️ *inserção das informções no banco de dados*
+* ✔️ *inserção das informações no banco de dados*
 </br></br>
 * 🏆 *login de usuário*</br>
 * ✔️ *validação de campos obrigatórios*</br>
@@ -66,15 +66,15 @@
 * ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*</br>
 * ✔️ *retirada do período de redefinição de senha*</br>
 * ✔️ *encriptação de senha*</br>
-* ✔️ *inserção das informções no banco de dados*</br>
+* ✔️ *inserção das informações no banco de dados*</br>
 </br></br>
 </br></br>
 **CONTA**
 </br></br>
-* 🏆 *atualização de informações*</br>
-* ✔️ *armazenamento de informções pertinentes a conta*</br>
-* ✔️ *atualização das informções do banco de dados*</br>
-* ✔️ *atualização das informções da sessão*</br>
+* 🏆 *atualização*</br>
+* ✔️ *armazenamento de informações pertinentes a conta*</br>
+* ✔️ *atualização das informações do banco de dados*</br>
+* ✔️ *atualização das informações da sessão*</br>
 </br></br>
 * 🏆 *desativação*</br>
 * ✔️ *atualização do status de desativação da conta*</br>
@@ -110,6 +110,18 @@
 * ✔️ *leitura de arquivos (corpo do e-mail)*</br>
 * ✔️ *aplicação dinâmica dos dados referentes ao envio do determinado e-mail*</br>
 * ✔️ *disparo do e-mail*</br>
+</br></br>
+</br></br>
+**AVALIAÇÕES**
+</br></br>
+* 🏆 *criação*</br>
+* ✔️ *verificação de campos*</br>
+* ✔️ *busca por produto avaliado*</br>
+* ✔️ *definição e relacionamento de nova avaliação*</br>
+</br></br>
+* 🏆 *atualização*</br>
+* ✔️ *verificação de campos*</br>
+* ✔️ *atualização das informações do banco de dados*</br>
 </br></br>
 </br></br>
 **ENTREGAS**
