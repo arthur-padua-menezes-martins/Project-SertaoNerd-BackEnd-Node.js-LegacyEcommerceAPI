@@ -13,7 +13,6 @@
   **Node Correios**</br>
   **Node PagSeguro**</br>
   **Nodemailer**</br>
-</br></br>
 **Mongoose**</br>
   **Mongoose Paginate**
   
