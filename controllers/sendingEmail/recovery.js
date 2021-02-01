@@ -1,5 +1,4 @@
-const
-  transporter = require('nodemailer').createTransport(require('../../config/email/email.js'))
+const transporter = require('nodemailer').createTransport(require('../../config/email/email.js'))
 const fs = require('fs')
 const path = require('path')
 

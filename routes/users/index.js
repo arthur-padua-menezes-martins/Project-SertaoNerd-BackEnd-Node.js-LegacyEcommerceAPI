@@ -1,5 +1,4 @@
-const
-  router = require('express').Router()
+const router = require('express').Router()
 const redisClient = require('../../server.js')
 const usersController = require('../../controllers/users/index.js'); const users = new usersController()
 

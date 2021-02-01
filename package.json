@@ -42,6 +42,7 @@
     "start": "nodemon dist/main/server.js",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "build": "tsc",
+    "dev": "nodemon server.js",
     "up": "npm run build && docker-compose up",
     "down": "docker-compose down",
     "test": "jest --passWithNoTests --watch --runInBand",

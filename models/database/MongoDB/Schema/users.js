@@ -92,9 +92,9 @@ usersSchema.plugin(mongoosePaginate, uniqueValidator)
 /* login-register-recovery */
 usersSchema.methods.passwordHash = async (password, User, Users = false) => {
   if (!Users) {
-    let { salt } = User
 
     salt = crypto.randomBytes(16).toString('hex')
+    User.salt = salt
     User.password = verify.crypto(password, salt)
 
     User.save()
@@ -104,7 +104,8 @@ usersSchema.methods.passwordHash = async (password, User, Users = false) => {
 }
 
 usersSchema.methods.verify = async (password, User) => {
-  const { salt } = User
+  const { salt } = User || { salt: '' }
+
   return verify.crypto(password, salt) === User.password
 }
 
@@ -114,8 +115,7 @@ usersSchema.methods.recover = async (User, recovery) => {
 }
 
 usersSchema.methods.unsetRecover = async (User, password) => {
-  const
-    attributes = [User.recovery, User.password]
+  const attributes = [User.recovery, User.password]
   const values = ['', usersSchema.methods.passwordHash(password, User)]
 
   for (let i = 0; i < attributes.length - 1; i++) {

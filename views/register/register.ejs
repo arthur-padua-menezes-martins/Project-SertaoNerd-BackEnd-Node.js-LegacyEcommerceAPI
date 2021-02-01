@@ -7,7 +7,7 @@
         <div class="col-sm-3 col-sm-offset-3">
             <h2>REGISTRAR-SE</h2> <hr> <br>
 
-            <div class="alert"></div> 
+            <div class="alert"></div>
 
             <form action="/register" method="post">
 
@@ -20,7 +20,7 @@
                 </div>
 
                 <button class="btn btn-primary" type="submit">LOGIN</button>
-            
+
             </form>
 
         </div>
@@ -33,13 +33,13 @@
     let form = document.querySelector( 'form' )
         form.setAttribute( 'action', window.location.href )
         form.addEventListener( 'submit', register )
-    
+
         function register()
         {
             event.preventDefault()
             let
                 ajax = new XMLHttpRequest(),
-                body = 
+                body =
                     'name='        + document.querySelector('input[name="name"]').value  +
                     '&email='     + document.querySelector('input[name="email"]').value  +
                     '&password='  + document.querySelector('input[name="password"]').value
@@ -56,8 +56,8 @@
                         `<div class="alert alert-success">${RESULT.success}</div>`  :   `<div class="alert alert-warning">${RESULT.errors}</div>`  
                 }
             }
-            
+
             ajax.send(body)
         }
-        
+
     </script>

@@ -51,8 +51,7 @@ app.use(session({
 /*AUTHENTICATION*/
 app.use(cors({
   credentials: true,
-  exposedHeaders: [`set-cookie`],
-  origin: [`http://localhost:9998`, `http://localhost:9999`, `http://localhost:10000`]
+  origin: ['http://localhost:3000', 'http://localhost:3001']
 }))
 
 

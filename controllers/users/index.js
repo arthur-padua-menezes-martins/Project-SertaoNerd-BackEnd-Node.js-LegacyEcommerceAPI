@@ -40,8 +40,10 @@ class usersController {
       const { body } = request; const { name, email, password } = body
 
       if (await validationsAccount.all(body)) {
+
         users.findOne({ email }).then(async User => {
-          if (User) {
+          console.log(User)
+          if (!(User)) {
             var user = await new users(await constructors.objectConstructor({ ...body }, ['password']))
 
             await user.passwordHash(password, user)
@@ -58,13 +60,13 @@ class usersController {
   }
 
   async login (request, response, next) {
-    console.log(request)
     try {
       const { email, password } = request.body
-
+      console.log(request.body)
       if (verify.every([email, password])) {
         users.findOne({ email }).then(async User => {
           if (User) {
+            console.log('User', User)
             if (await User.verify(password, User)) {
               request.user = User
               User.sessionStore(request, response)
