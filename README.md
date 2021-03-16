@@ -46,25 +46,25 @@
 </br></br>
 * 🏆 *registro de usuário*</br>
 * ✔️ *validação de campos obrigatórios*</br>
-* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *verificação preliminar da existência das informações*</br>
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informações no banco de dados*
 </br></br>
 * 🏆 *login de usuário*</br>
 * ✔️ *validação de campos obrigatórios*</br>
-* ✔️ *verificação preliminar da existância das informações e disponibilidade de acesso à conta*</br>
+* ✔️ *verificação preliminar da existência das informações e disponibilidade de acesso à conta*</br>
 * ✔️ *decodificação e verificação da compatibilidade entre senha cadastrada e senha enviada*</br>
 * ✔️ *criação de sessão*</br>
 </br></br>
 * 🏆 *pedido de redefinição de senha*</br>
 * ✔️ *validação de campos obrigatórios*</br>
-* ✔️ *verificação preliminar da existância das informações*</br>
+* ✔️ *verificação preliminar da existência das informações*</br>
 * ✔️ *definição do período para redefinição de senha*</br>
 * ✔️ *envio de e-mail com a chave necessária para a redefinição da senha*</br>
 </br></br>
 * 🏆 *redefinição de senha*</br>
 * ✔️ *validação de campos obrigatórios*</br>
-* ✔️ *verificação preliminar da existância das informações e validade do período de redefinição de senha*</br>
+* ✔️ *verificação preliminar da existência das informações e validade do período de redefinição de senha*</br>
 * ✔️ *remoção do período de redefinição de senha*</br>
 * ✔️ *encriptação de senha*</br>
 * ✔️ *inserção das informações no banco de dados*</br>
