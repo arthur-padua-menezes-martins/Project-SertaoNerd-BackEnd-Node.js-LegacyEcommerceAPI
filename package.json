@@ -33,7 +33,7 @@
     "node-correios": "^3.0.2",
     "node-gyp": "^7.1.2",
     "node-pagseguro": "^0.1.9",
-    "nodemailer": "^6.4.14",
+    "nodemailer": "^6.4.16",
     "nodemon": "^2.0.6",
     "xml2js": "^0.4.23",
     "xml2json": "^0.12.0"
