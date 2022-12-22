@@ -21,7 +21,7 @@
     "express-jwt": "^5.3.3",
     "express-session": "^1.17.1",
     "express-validation": "^3.0.6",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.11",
